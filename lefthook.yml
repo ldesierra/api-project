@@ -1,0 +1,16 @@
+pre-commit:
+  paralell: true
+  commands:
+    brakeman:
+     run: bundle exec brakeman . --no-pager -q
+    rubocop:
+      run: bundle exec rubocop
+    reek:
+      run: bundle exec reek .
+    rails_best_practices:
+      run: bundle exec rails_best_practices .
+
+pre-push:
+  commands:
+    rspec:
+      run: bundle exec rspec

@@ -1,0 +1,104 @@
+version: 2.1
+
+orbs:
+  heroku: circleci/heroku@1.2.6
+  ruby: circleci/ruby@1.8.0
+  # node: circleci/node@5.0.2
+
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.1.1-node
+    steps:
+      - checkout
+      - ruby/install-deps
+      # - node/install-packages:
+      #     pkg-manager: yarn
+
+  test:
+    docker:
+      - image: cimg/ruby:3.1.1-node
+      - image: cimg/postgres:14.4
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: noLoTires_Back_test
+          POSTGRES_PASSWORD: ""
+          POSTGRES_HOST_AUTH_METHOD: trust
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
+    steps:
+      - checkout
+      - ruby/install-deps
+      # - node/install-packages:
+      #     pkg-manager: yarn
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database Setup
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:migrate
+      - run:
+          name: Ruby lint
+          command: |
+            bundle exec rubocop
+            bundle exec rails_best_practices
+            bundle exec reek
+            bundle exec brakeman
+      - run:
+          name: Run rspec
+          command: bundle exec rspec spec/
+
+workflows:
+  run-ci:
+    jobs:
+      - build:
+          context: staging
+      - test:
+          context: staging
+          requires:
+            - build
+      - heroku/deploy-via-git:
+          context: staging
+          app-name: $HEROKU_NAME_API
+          name: deploy-to-staging
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - develop
+      - heroku/deploy-via-git:
+          context: pre
+          app-name: $HEROKU_NAME_API
+          name: deploy-to-pre
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - /^release\/v.*/
+      - hold-deploy-to-production:
+          type: approval
+          requires:
+            - deploy-to-pre
+          filters:
+            branches:
+              only:
+                - /^release\/v.*/
+      - heroku/deploy-via-git:
+          context: production
+          app-name: $HEROKU_NAME_API
+          name: deploy-to-production
+          requires:
+            - hold-deploy-to-production
+          filters:
+            branches:
+              only:
+                - /^release\/v.*/
