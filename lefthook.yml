@@ -2,7 +2,7 @@ pre-commit:
   paralell: true
   commands:
     brakeman:
-     run: bundle exec brakeman . --no-pager -q
+      run: bundle exec brakeman . --no-pager -q
     rubocop:
       run: bundle exec rubocop
     reek:
