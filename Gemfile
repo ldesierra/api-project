@@ -18,6 +18,12 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'rack-cors'
 
+gem 'activeadmin'
+
+gem 'sprockets-rails', require: 'sprockets/railtie'
+
+gem 'sass-rails'
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
