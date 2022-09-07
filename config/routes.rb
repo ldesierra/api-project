@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
+  resource :restaurants, only: [:new, :create]
+
   root to: 'home#index'
   get '/admin', to: 'admin/dashboard#index'
 end

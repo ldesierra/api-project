@@ -1,0 +1,19 @@
+<%= stylesheet_link_tag 'active_admin' %>
+  <%= form_with url: reject_restaurant_admin_restaurant_path, html: { class: 'formtastic inscription' } do |form| %>
+    <fieldset class='inputs'>
+      <ol>
+        <li class='file input optional'>
+        <label>Razones del rechazo</label>
+          <%= form.text_area :reject_reason %>
+        </li>
+      </ol>
+    </fieldset>
+
+    <fieldset class='actions'>
+      <ol>
+        <li class='action input_action'>
+          <input type='submit' name='commit' value='Enviar'>
+        </li>
+      </ol>
+    </fieldset>
+  <% end %>

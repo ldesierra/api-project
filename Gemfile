@@ -14,13 +14,13 @@ gem 'pg', '~> 1.1'
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
 
+gem 'activeadmin'
 gem 'devise'
 gem 'devise_invitable', '~> 2.0.0'
 gem 'devise-jwt'
 gem 'paranoia', '~> 2.2'
 gem 'rack-cors'
-
-gem 'activeadmin'
+gem 'solidservice'
 
 gem 'sprockets-rails', require: 'sprockets/railtie'
 
