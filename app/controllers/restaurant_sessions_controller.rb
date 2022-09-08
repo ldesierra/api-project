@@ -56,7 +56,9 @@ class RestaurantSessionsController < Devise::SessionsController
 
     Twilio::GenerateCode.call(restaurant_user.phone_number)
 
-    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
+    crypt = ActiveSupport::MessageEncryptor.new(
+      Rails.application.credentials[:secret_key_base][0..31]
+    )
     crypt.encrypt_and_sign("{\"id\":\"#{restaurant_user.id}\",
                            \"access_token\":\"#{restaurant_user.otp_access_token}\"}")
   end
@@ -72,7 +74,9 @@ class RestaurantSessionsController < Devise::SessionsController
   end
 
   def decrypt_param_token(_token)
-    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31])
+    crypt = ActiveSupport::MessageEncryptor.new(
+      Rails.application.credentials[:secret_key_base][0..31]
+    )
 
     begin
       crypt.decrypt_and_verify(params[:access_token])
