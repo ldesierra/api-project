@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_06_234940) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,6 +81,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_06_234940) do
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
     t.string "jti"
+    t.string "otp_access_token"
+    t.string "phone_number"
     t.index ["deleted_at"], name: "index_restaurant_users_on_deleted_at"
     t.index ["email"], name: "index_restaurant_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_restaurant_users_on_invitation_token", unique: true

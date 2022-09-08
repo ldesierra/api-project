@@ -1,6 +1,12 @@
 class SessionsController < Devise::SessionsController
   respond_to :json
 
+  after_action :skip_session
+
+  def skip_session
+    request.session_options[:skip] = true
+  end
+
   private
 
   def respond_with(_resource, _opts = {})
