@@ -1,10 +1,8 @@
 class AcceptRestaurant < SolidService::Base
   def call
     load_resources
-    @restaurant.update(active: true)
-    @owner.invite!
-
-    RestaurantMailer.with(mailer_params).accept_restaurant.deliver_now
+    @restaurant.update(status: :inactive)
+    @manager.invite!
 
     if service_success
       success!(restaurant: @restaurant)
@@ -17,18 +15,10 @@ class AcceptRestaurant < SolidService::Base
 
   def load_resources
     @restaurant = params[:restaurant]
-    @owner = params[:owner]
+    @manager = params[:manager]
   end
 
   def service_success
-    # onwer.valid_invitation?
-    @restaurant.active? && @owner.invited_to_sign_up?
-  end
-
-  def mailer_params
-    {
-      restaurant: @restaurant,
-      owner_email: @owner.email
-    }
+    @restaurant.inactive? && @manager.invited_to_sign_up?
   end
 end

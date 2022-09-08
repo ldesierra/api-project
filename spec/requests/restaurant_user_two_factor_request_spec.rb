@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Restaurant user two factor endpoint', type: :request do
   scenario 'with correct code and access token' do
     restaurant_user = create(:restaurant_user)
-
+    restaurant_user.confirm
     post '/restaurant_users/login', params: {
       restaurant_user: {
         email: restaurant_user.email,
@@ -59,6 +59,7 @@ RSpec.describe 'Restaurant user two factor endpoint', type: :request do
 
   scenario 'with incorrect two factor code' do
     restaurant_user = create(:restaurant_user)
+    restaurant_user.confirm
 
     post '/restaurant_users/login', params: {
       restaurant_user: {

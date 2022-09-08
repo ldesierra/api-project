@@ -5,7 +5,7 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.owner.skip_confirmation_notification!
+    restaurant_manager.skip_confirmation_notification!
 
     if @restaurant.save
       render json: { message: 'Restaurant solicited correctly' }, status: :ok
@@ -17,7 +17,12 @@ class RestaurantsController < ApplicationController
 
   private
 
+  def restaurant_manager
+    @restaurant.restaurant_users.first
+  end
+
   def restaurant_params
-    params.require(:restaurant).permit(:name, owner_attributes: [:email])
+    params.require(:restaurant).permit(:name, :phone_number, :location,
+                                       restaurant_users_attributes: [:name, :email, :phone_number])
   end
 end

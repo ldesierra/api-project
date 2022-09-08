@@ -357,11 +357,19 @@ Devise.setup do |config|
     jwt.secret = Rails.application.credentials.jwt_secret
     jwt.dispatch_requests = if ENV['DISABLE_2FA'].present?
                               [['POST',
-                                %r{^/restaurant_users/login$}]]
+                                %r{^/restaurant_users/login$}],
+                               [
+                                 'PUT',
+                                 %r{^/restaurant_users/confirm_invite$}
+                               ]]
                             else
                               [[
                                 'POST', %r{^/restaurant_users/two_factor$}
-                              ]]
+                              ],
+                               [
+                                 'PUT',
+                                 %r{^/restaurant_users/confirm_invite$}
+                               ]]
                             end
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]

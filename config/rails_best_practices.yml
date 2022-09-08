@@ -33,6 +33,7 @@ UseModelAssociationCheck: {}
 UseMultipartAlternativeAsContentTypeOfEmailCheck:
   ignored_files:
     - 'app/mailers/restaurant_mailer.rb'
+    - 'app/mailers/devise_mailer.rb'
 
 #UseParenthesesInMethodDefCheck: { }
 UseObserverCheck: {}

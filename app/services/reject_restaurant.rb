@@ -5,7 +5,7 @@ class RejectRestaurant < SolidService::Base
 
     RestaurantMailer.with(mailer_params).reject_restaurant.deliver_now
 
-    if @restaurant.deleted? && @owner.deleted?
+    if @restaurant.deleted? && @manager.deleted?
       success!(restaurant: @restaurant)
     else
       fail!(restaurant: @restaurant)
@@ -16,18 +16,18 @@ class RejectRestaurant < SolidService::Base
 
   def load_resources
     @restaurant = params[:restaurant]
-    @owner = params[:owner]
+    @manager = params[:manager]
   end
 
   def soft_delete_records
     @restaurant.destroy
-    @owner.destroy
+    @manager.destroy
   end
 
   def mailer_params
     {
       restaurant: @restaurant,
-      owner_email: @owner.email,
+      manager_email: @manager.email,
       reject_reason: params[:reject_reason]
     }
   end

@@ -9,6 +9,7 @@ class RestaurantUser < ApplicationRecord
   belongs_to :restaurant
 
   validates :email, :phone_number, presence: true, uniqueness: true
+
   validates_presence_of :name, :role
 
   enum role: { manager: 0, employee: 1 }

@@ -1,6 +1,7 @@
 module Helpers
   module LogRestaurantUserIn
     def log_restaurant_user_in(restaurant_user)
+      restaurant_user.confirm
       post '/restaurant_users/login', params: {
         restaurant_user: {
           email: restaurant_user.email,

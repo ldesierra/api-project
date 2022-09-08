@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Customer sign out endpoint', type: :request do
+RSpec.describe 'Restaurant User sign out endpoint', type: :request do
   scenario 'Auth token gets revoked' do
     restaurant_user = create(:restaurant_user)
 
