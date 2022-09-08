@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  devise_for :restaurant_users, skip: %i[regsitrations sessions passwords]
+  devise_for :restaurant_users, skip: %i[registrations sessions passwords]
   devise_scope :restaurant_user do
     post '/restaurant_users/sign_up', to: 'restaurant_registrations#create'
     post '/restaurant_users/login', to: 'restaurant_sessions#create'
