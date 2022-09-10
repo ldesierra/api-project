@@ -1,6 +1,9 @@
 class RestaurantSessionsController < Devise::SessionsController
   respond_to :json
 
+  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
+
   before_action :skip_session
 
   def skip_session

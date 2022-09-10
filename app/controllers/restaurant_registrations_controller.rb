@@ -1,6 +1,9 @@
 class RestaurantRegistrationsController < Devise::RegistrationsController
   respond_to :json
 
+  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
+
   def create
     build_resource(sign_up_params)
 
