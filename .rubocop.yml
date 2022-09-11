@@ -2,6 +2,10 @@ Layout/SpaceBeforeFirstArg:
   Exclude:
     - app/views/api/**/**/*
 
+Lint/UnusedMethodArgument:
+  Exclude:
+    - app/models/fake_twilio.rb
+
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*

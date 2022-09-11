@@ -1,4 +1,7 @@
 detectors:
+  UnusedParameters:
+    exclude:
+      - "FakeTwilio#create"
   DuplicateMethodCall:
     max_calls: 3
   FeatureEnvy:

@@ -33,5 +33,7 @@
 # Ignore application configuration
 /config/application.yml
 
+/coverage
+
 # Ignore dump.rdb
 /dump.rdb
