@@ -1,6 +1,8 @@
 require 'simplecov'
 
-SimpleCov.start
+SimpleCov.start do
+  add_filter '/admin'
+end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
@@ -68,6 +70,7 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include Helpers::LogCustomerIn, type: :request
+  config.include Helpers::LogRestaurantUserIn, type: :request
 end
 
 Shoulda::Matchers.configure do |config|

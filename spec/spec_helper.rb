@@ -94,7 +94,7 @@ RSpec.configure do |config|
     stub_const('Twilio::REST::Client', FakeTwilio)
   end
 
-  config.before :each, type: :feature do
+  config.before :each, type: :request do
     FakeTwilio.messages = []
   end
 end

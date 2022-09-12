@@ -23,16 +23,17 @@ class RestaurantSessionsController < Devise::SessionsController
     end
 
     if error.present?
-      render json: { message: error }
+      render json: { message: error }, status: 401
     else
       verification_success = Twilio::Authenticate.authenticate(user.phone_number,
-                                                               params[:two_factor_code])
+                                                               params[:two_factor_code].presence ||
+                                                               'empty_code')
 
       if verification_success
         warden.set_user(user, scope: :restaurant_user)
         respond_with resource
       else
-        'Invalid code, try again'
+        render json: { message: 'Invalid code, try again' }, status: 401
       end
     end
   end
@@ -80,6 +81,8 @@ class RestaurantSessionsController < Devise::SessionsController
     crypt = ActiveSupport::MessageEncryptor.new(
       Rails.application.credentials[:secret_key_base][0..31]
     )
+
+    return unless params[:access_token].present?
 
     begin
       crypt.decrypt_and_verify(params[:access_token])
