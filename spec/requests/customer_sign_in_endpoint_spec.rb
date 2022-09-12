@@ -20,7 +20,7 @@ RSpec.describe 'Customer sign in endpoint', type: :request do
     json = JSON.parse(response.body).deep_symbolize_keys
 
     # check the value of the returned response hash
-    expect(json[:message]).to eq('Logged in successfuly')
+    expect(json[:message]).to eq('Logged in successfully')
 
     expect(get('/',
                headers: { "HTTP_AUTHORIZATION":

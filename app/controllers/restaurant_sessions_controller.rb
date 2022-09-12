@@ -45,7 +45,7 @@ class RestaurantSessionsController < Devise::SessionsController
     if ENV['DISABLE_2FA'].blank?
       encrypted_token = start_2fa_authentication(params[:restaurant_user][:email])
 
-      render json: { access_token: encrypted_token }, status: :ok
+      render json: { access_token: encrypted_token }, status: 200
     else
       respond_with resource
     end
@@ -69,11 +69,11 @@ class RestaurantSessionsController < Devise::SessionsController
   def respond_with(_resource, _opts = {})
     return unless current_restaurant_user.present?
 
-    render json: { message: 'Logged in successfuly' }, status: :ok
+    render json: { message: 'Logged in successfully' }, status: 200
   end
 
   def respond_to_on_destroy
-    render json: { message: 'Logged out successfuly' }, status: :ok
+    render json: { message: 'Logged out successfully' }, status: 200
   end
 
   def decrypt_param_token(_token)

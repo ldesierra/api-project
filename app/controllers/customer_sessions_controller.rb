@@ -1,4 +1,4 @@
-class SessionsController < Devise::SessionsController
+class CustomerSessionsController < Devise::SessionsController
   respond_to :json
 
   protect_from_forgery with: :null_session
@@ -13,10 +13,10 @@ class SessionsController < Devise::SessionsController
   private
 
   def respond_with(_resource, _opts = {})
-    render json: { message: 'Logged in successfuly' }, status: :ok if current_customer.present?
+    render json: { message: 'Logged in successfully' }, status: 200 if current_customer.present?
   end
 
   def respond_to_on_destroy
-    render json: { message: 'Logged out successfuly' }, status: :ok
+    render json: { message: 'Logged out successfully' }, status: 200
   end
 end

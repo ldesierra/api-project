@@ -1,4 +1,4 @@
-class RegistrationsController < Devise::RegistrationsController
+class CustomerRegistrationsController < Devise::RegistrationsController
   respond_to :json
 
   protect_from_forgery with: :null_session
@@ -8,10 +8,10 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.save
-      render json: { message: 'Signed up successfuly', user: resource }, status: :created
+      render json: { message: 'Signed up successfully', user: resource }, status: 201
     else
       render json: { message: resource.errors.full_messages, user: resource },
-             status: :unprocessable_entity
+             status: 422
     end
   end
 end

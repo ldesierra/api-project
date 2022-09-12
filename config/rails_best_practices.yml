@@ -30,7 +30,6 @@ SimplifyRenderInControllersCheck: {}
 SimplifyRenderInViewsCheck: {}
 #UseBeforeFilterCheck: { customize_count: 2 }
 UseModelAssociationCheck: {}
-UseMultipartAlternativeAsContentTypeOfEmailCheck: {}
 #UseParenthesesInMethodDefCheck: { }
 UseObserverCheck: {}
 UseQueryAttributeCheck: {}

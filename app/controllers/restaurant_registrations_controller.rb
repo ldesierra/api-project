@@ -8,10 +8,10 @@ class RestaurantRegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.save
-      render json: { message: 'Signed up successfuly', restaurant_user: resource }, status: :created
+      render json: { message: 'Signed up successfully', restaurant_user: resource }, status: 201
     else
       render json: { message: resource.errors.full_messages, restaurant_user: resource },
-             status: :unprocessable_entity
+             status: 422
     end
   end
 end

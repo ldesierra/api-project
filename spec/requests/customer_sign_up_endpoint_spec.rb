@@ -23,7 +23,7 @@ RSpec.describe 'Customer sign up endpoint', type: :request do
     json = JSON.parse(response.body).deep_symbolize_keys
 
     # check the value of the returned response hash
-    expect(json[:message]).to eq('Signed up successfuly')
+    expect(json[:message]).to eq('Signed up successfully')
 
     # new Customer was created
     expect(Customer.count).to eq(1)
