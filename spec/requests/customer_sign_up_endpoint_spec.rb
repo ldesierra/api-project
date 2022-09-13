@@ -48,7 +48,7 @@ RSpec.describe 'Customer sign up endpoint', type: :request do
     json = JSON.parse(response.body).deep_symbolize_keys
 
     # check the value of the returned response hash
-    expect(json[:message]).to eq(["Email can't be blank"])
+    expect(json[:message]).to eq(['Email no puede estar en blanco'])
 
     # Customer was not created
     expect(Customer.count).to eq(0)

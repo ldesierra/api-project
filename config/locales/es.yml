@@ -1,0 +1,16 @@
+es:
+  activerecord:
+    attributes:
+      customer:
+        email: "Email"
+        password: "Contraseña"
+        username: "Nombre de usuario"
+        first_name: "Nombre"
+        last_name: "Apellido"
+        phone: "Celular"
+        avatar: "Avatar"
+      restaurant_user:
+        email: "Email"
+        password: "Contraseña"
+        name: "Nombre"
+        phone_number: "Celular"

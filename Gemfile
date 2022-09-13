@@ -39,6 +39,8 @@ gem 'twilio-ruby', '~> 5.70.0'
 
 gem 'figaro'
 
+gem 'rails-i18n', '~> 7.0.0'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
