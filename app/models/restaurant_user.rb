@@ -6,5 +6,10 @@ class RestaurantUser < ApplicationRecord
 
   acts_as_paranoid
 
-  enum role: { manager: 0, employee: 1 }
+  belongs_to :restaurant
+
+  validates_presence_of :email, :password, :name, :phone_number, :role
+  validates_uniqueness_of :email
+
+  enum role: { Manager: 0, Employee: 1 }
 end

@@ -83,6 +83,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
     t.string "jti"
     t.string "otp_access_token"
     t.string "phone_number"
+    t.bigint "restaurant_id"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.index ["confirmation_token"], name: "index_restaurant_users_on_confirmation_token", unique: true
     t.index ["deleted_at"], name: "index_restaurant_users_on_deleted_at"
     t.index ["email"], name: "index_restaurant_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_restaurant_users_on_invitation_token", unique: true
@@ -90,6 +95,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
     t.index ["invited_by_type", "invited_by_id"], name: "index_restaurant_users_on_invited_by"
     t.index ["jti"], name: "index_restaurant_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_restaurant_users_on_reset_password_token", unique: true
+    t.index ["restaurant_id"], name: "index_restaurant_users_on_restaurant_id"
   end
 
+  create_table "restaurants", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_restaurants_on_deleted_at"
+  end
+
+  add_foreign_key "restaurant_users", "restaurants"
 end
