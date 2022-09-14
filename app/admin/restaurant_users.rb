@@ -35,7 +35,7 @@ ActiveAdmin.register RestaurantUser do
       f.input :role
       f.input :phone_number
       f.input :restaurant_id, as: :select,
-                              collection: Restaurant.all.map { |u| [u.name, u.id] },
+                              collection: Restaurant.pluck(:name, :id),
                               include_blank: false
     end
     f.actions
