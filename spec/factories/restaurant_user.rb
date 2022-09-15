@@ -4,5 +4,6 @@ FactoryBot.define do
     email { Faker::Internet.email }
     phone_number { Faker::PhoneNumber.cell_phone }
     password { Faker::Internet.password }
+    restaurant
   end
 end
