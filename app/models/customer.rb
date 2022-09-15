@@ -6,6 +6,6 @@ class Customer < ApplicationRecord
 
   acts_as_paranoid
 
-  validates_presence_of :email, :password, :first_name, :last_name, :phone
-  validates_uniqueness_of :email, :username
+  validates_presence_of :password, :first_name, :last_name, :phone
+  validates :email, :username, presence: true, uniqueness: true
 end
