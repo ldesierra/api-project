@@ -5,6 +5,6 @@ FactoryBot.define do
     username { Faker::Internet.username }
     email { Faker::Internet.email }
     phone { '+59899999999' }
-    password { Faker::Internet.password }
+    password { Faker::Internet.password(min_length: 8) }
   end
 end

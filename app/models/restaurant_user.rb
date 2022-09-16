@@ -11,5 +11,7 @@ class RestaurantUser < ApplicationRecord
   validates :email, :phone_number, presence: true, uniqueness: true
   validates_presence_of :name, :role
 
+  validates_length_of :password, minimum: 8
+
   enum role: { manager: 0, employee: 1 }
 end

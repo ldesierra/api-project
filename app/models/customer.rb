@@ -9,6 +9,7 @@ class Customer < ApplicationRecord
   validates_presence_of :password, :first_name, :last_name, :phone
   validates :email, :username, presence: true, uniqueness: true
 
+  validates_length_of :password, minimum: 8
   validates_format_of :email, with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
   validates_format_of :phone, with: /\A\+598\d{8}\z/
 end
