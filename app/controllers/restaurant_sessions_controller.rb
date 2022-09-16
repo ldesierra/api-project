@@ -52,6 +52,16 @@ class RestaurantSessionsController < Devise::SessionsController
     end
   end
 
+  def destroy
+    restaurant_user = warden.authenticate!({ scope: :restaurant_user })
+
+    if restaurant_user && sign_out
+      respond_to_on_destroy
+    else
+      render json: { message: 'Error signing out' }, status: 401
+    end
+  end
+
   private
 
   def start_2fa_authentication(user_email)

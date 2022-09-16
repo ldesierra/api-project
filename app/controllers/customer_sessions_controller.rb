@@ -12,7 +12,7 @@ class CustomerSessionsController < Devise::SessionsController
   end
 
   def destroy
-    customer = warden.authenticate?({ scope: :customer })
+    customer = warden.authenticate!({ scope: :customer })
 
     if customer && sign_out
       respond_to_on_destroy

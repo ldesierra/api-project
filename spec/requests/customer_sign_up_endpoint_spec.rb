@@ -12,7 +12,7 @@ RSpec.describe 'Customer sign up endpoint', type: :request do
         username: Faker::Internet.username,
         first_name: Faker::Name.first_name,
         last_name: Faker::Name.last_name,
-        phone: Faker::PhoneNumber.phone_number
+        phone: '+59899999999'
       }
     }
 
@@ -48,7 +48,8 @@ RSpec.describe 'Customer sign up endpoint', type: :request do
     json = JSON.parse(response.body).deep_symbolize_keys
 
     # check the value of the returned response hash
-    expect(json[:message]).to eq(['Email no puede estar en blanco'])
+    expect(json[:message]).to eq(['Email no puede estar en blanco', 'Email no es válido',
+                                  'Celular no es válido'])
 
     # Customer was not created
     expect(Customer.count).to eq(0)
