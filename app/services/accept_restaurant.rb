@@ -1,7 +1,7 @@
 class AcceptRestaurant < SolidService::Base
   def call
     load_resources
-    @restaurant.update(status: :inactive)
+    @restaurant.update(status: :incomplete)
     @manager.invite!
 
     if service_success
@@ -19,6 +19,6 @@ class AcceptRestaurant < SolidService::Base
   end
 
   def service_success
-    @restaurant.inactive? && @manager.invited_to_sign_up?
+    @restaurant.incomplete? && @manager.invited_to_sign_up?
   end
 end

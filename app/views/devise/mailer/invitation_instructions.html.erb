@@ -2,7 +2,7 @@
 
 <p>Tu solicitud para unirte a No Lo Tires ha sido aceptada. Crea tu usuario con el link de abajo!</p>
 
-<% first_manager = '&amp;first_time=true' if @resource.restaurant.inactive? %>
+<% first_manager = '&amp;first_time=true' if @resource.restaurant.incomplete? %>
 
 <p><%= link_to 'Aceptar Invitacion',
   "#{ENV['APP_HOST']}/restaurant_users/accept_invite?invitation_token=#{@token}&&id=#{@resource.id}#{first_manager}"

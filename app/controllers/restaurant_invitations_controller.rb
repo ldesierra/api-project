@@ -8,53 +8,43 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   # PUT /resource/invitation
   def update
-    raw_invitation_token = update_resource_params[:invitation_token]
     load_restaurant_user
 
-    if @restaurant_user.restaurant.active?
-      self.resource = accept_resource
-      invitation_accepted = resource.errors.empty?
-
-      yield resource if block_given?
-
-      if invitation_accepted
-        if resource.class.allow_insecure_sign_in_after_accept
-          resource.after_database_authentication
-          sign_in(resource_name, resource)
-        end
-
-        render json: { message: 'Invitation accepted successfully' }, status: 200
-      else
-        resource.invitation_token = raw_invitation_token
-        render json: { message: resource.errors.full_messages }, status: 422
-      end
-    else
+    unless restaurant_active
       update_restaurant
 
-      if @restaurant.valid?
-        self.resource = accept_resource
-        invitation_accepted = resource.errors.empty?
+      return respond_with_errors(resource) unless @restaurant.valid?
+    end
 
-        if invitation_accepted
-          @restaurant.save
+    self.resource = accept_resource
 
-          if resource.class.allow_insecure_sign_in_after_accept
-            resource.after_database_authentication
-            sign_in(resource_name, resource)
+    if resource.no_errors?
+      @restaurant.save unless restaurant_active
 
-          end
-          render json: { message: 'Invitation accepted successfully' }, status: 200
-        else
-          resource.invitation_token = raw_invitation_token
-          render json: { message: resource.errors.full_messages }, status: 422
-        end
-      else
-        render json: { message: resource.errors.full_messages }, status: 422
-      end
+      insecure_sign_in_if_allowed(resource_name, resource)
+
+      render json: { message: 'Invitation accepted successfully' }, status: 200
+    else
+      respond_with_errors(resource)
     end
   end
 
   private
+
+  def respond_with_errors(_resource)
+    render json: { message: resource.full_messages_for_errors }, status: 422
+  end
+
+  def insecure_sign_in_if_allowed(resource_name, resource)
+    return unless resource.class.allow_insecure_sign_in_after_accept
+
+    resource.after_database_authentication
+    sign_in(resource_name, resource)
+  end
+
+  def restaurant_active
+    @restaurant_user.restaurant.complete?
+  end
 
   def load_restaurant_user
     @restaurant_user = RestaurantUser.find(params[:id])
@@ -62,7 +52,7 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   def update_restaurant
     @restaurant = Restaurant.find(resource.restaurant_id)
-    @restaurant.update(restaurant_params)
+    @restaurant.assign_attributes(restaurant_params)
   end
 
   def restaurant_params

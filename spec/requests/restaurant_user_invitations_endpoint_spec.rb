@@ -7,7 +7,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         name: 'Test',
         restaurant_users_attributes: {
           '0': {
-            email: 'tuk2i@email.com',
+            email: 'test@email.com',
             phone_number: '1234',
             name: 'Name'
           }
@@ -33,8 +33,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     put '/restaurant_users/confirm_invite', params: {
       restaurant_user: {
         email: restaurant_user.email,
-        password: 12_345_678,
-        password_confirmation: 12_345_678,
+        password: 'password',
+        password_confirmation: 'password',
         invitation_token: token
       },
       restaurant: {
@@ -45,9 +45,14 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
 
     expect(response.status).to eq(200)
 
+    restaurant_user.reload
+    restaurant.reload
+
     json = JSON.parse(response.body).deep_symbolize_keys
 
     expect(json[:message]).to eq('Invitation accepted successfully')
+    expect(restaurant_user.encrypted_password?).to eq(true)
+    expect(restaurant.active?).to eq(true)
   end
 
   scenario 'with incorrect token sent back' do
@@ -56,7 +61,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         name: 'Test',
         restaurant_users_attributes: {
           '0': {
-            email: 'tuk2i@email.com',
+            email: 'test@email.com',
             phone_number: '1234',
             name: 'Name'
           }
@@ -81,8 +86,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     put '/restaurant_users/confirm_invite', params: {
       restaurant_user: {
         email: restaurant_user.email,
-        password: 12_345_678,
-        password_confirmation: 12_345_678,
+        password: 'password',
+        password_confirmation: 'password',
         invitation_token: token
       },
       restaurant: {
@@ -91,11 +96,16 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
       id: restaurant_user.id
     }
 
+    restaurant_user.reload
+    restaurant.reload
+
     expect(response.status).to eq(422)
 
     json = JSON.parse(response.body).deep_symbolize_keys
 
     expect(json[:message]).to eq(['Invitation token no es válido'])
+    expect(restaurant_user.encrypted_password?).to eq(false)
+    expect(restaurant.active?).to eq(false)
   end
 
   scenario 'with correct token and restaurant active' do
@@ -104,7 +114,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         name: 'Test',
         restaurant_users_attributes: {
           '0': {
-            email: 'tuk2i@email.com',
+            email: 'test@email.com',
             phone_number: '1234',
             name: 'Name'
           }
@@ -133,8 +143,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     put '/restaurant_users/confirm_invite', params: {
       restaurant_user: {
         email: restaurant_user.email,
-        password: 12_345_678,
-        password_confirmation: 12_345_678,
+        password: 'password',
+        password_confirmation: 'password',
         invitation_token: token
       },
       restaurant: {
@@ -143,10 +153,15 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
       id: restaurant_user.id
     }
 
+    restaurant_user.reload
+    restaurant.reload
+
     expect(response.status).to eq(200)
 
     json = JSON.parse(response.body).deep_symbolize_keys
 
     expect(json[:message]).to eq('Invitation accepted successfully')
+    expect(restaurant_user.encrypted_password?).to eq(true)
+    expect(restaurant.active?).to eq(true)
   end
 end

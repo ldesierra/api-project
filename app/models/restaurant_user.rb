@@ -13,4 +13,12 @@ class RestaurantUser < ApplicationRecord
   validates_presence_of :name, :role
 
   enum role: { manager: 0, employee: 1 }
+
+  def no_errors?
+    errors.empty?
+  end
+
+  def full_messages_for_errors
+    errors.full_messages
+  end
 end
