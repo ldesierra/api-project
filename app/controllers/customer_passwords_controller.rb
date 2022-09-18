@@ -11,6 +11,9 @@ class CustomerPasswordsController < Devise::PasswordsController
   end
 
   def create
+    return render json: { message: 'No existe un usuario con ese email' }, status: 404 unless
+      Customer.exists?(email: resource_params[:email])
+
     self.resource = resource_class.send_reset_password_instructions(resource_params)
 
     if successfully_sent?(resource)

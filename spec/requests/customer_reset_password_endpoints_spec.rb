@@ -78,4 +78,18 @@ RSpec.describe 'Customer reset password endpoints', type: :request do
 
     expect(json[:message].first).to eq('Reset password token no es válido')
   end
+
+  scenario 'with incorrect email' do
+    post '/customers/password', params: {
+      customer: {
+        email: Faker::Internet.email
+      }
+    }
+
+    expect(response.status).to eq(404)
+
+    json = JSON.parse(response.body).deep_symbolize_keys
+
+    expect(json[:message]).to eq('No existe un usuario con ese email')
+  end
 end
