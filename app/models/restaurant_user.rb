@@ -12,7 +12,8 @@ class RestaurantUser < ApplicationRecord
 
   validates_presence_of :name, :role
 
-  validates_length_of :password, minimum: 8
+  validates_length_of :password, minimum: 8, if: :confirmed?
+  validates_confirmation_of :password, if: :confirmed?
 
   enum role: { manager: 0, employee: 1 }
 
