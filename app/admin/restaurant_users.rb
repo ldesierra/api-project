@@ -1,18 +1,12 @@
 ActiveAdmin.register RestaurantUser do
+  before_create(&:confirm)
+
   permit_params :email, :password, :name, :role, :phone_number, :restaurant_id
 
   filter :email
   filter :name
   filter :role, as: :select
   filter :restaurant_id
-
-  after_action :confirm_user, only: [:create]
-
-  controller do
-    def confirm_user
-      resource.confirm if resource.valid?
-    end
-  end
 
   index do
     id_column

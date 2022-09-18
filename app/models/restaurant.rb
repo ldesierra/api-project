@@ -8,9 +8,21 @@ class Restaurant < ApplicationRecord
 
   validates_presence_of :name
 
+  validate :manager_present
+
   enum status: [:pending, :incomplete, :inactive, :active]
 
   def complete?
     inactive? || active?
+  end
+
+  private
+
+  def manager_present
+    restaurant_users.each do |user|
+      return true if user.manager?
+    end
+
+    errors.add(:restaurant, 'Debe existir algun usuario manager')
   end
 end

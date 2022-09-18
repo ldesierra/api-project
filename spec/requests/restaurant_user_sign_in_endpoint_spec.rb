@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Restaurant user sign in endpoint', type: :request do
   scenario 'with correct email and password' do
-    restaurant_user = create(:restaurant_user)
+    restaurant_user = create(:restaurant).restaurant_users.first
     restaurant_user.confirm
 
     post '/restaurant_users/login', params: {
@@ -25,7 +25,7 @@ RSpec.describe 'Restaurant user sign in endpoint', type: :request do
   end
 
   scenario 'with incorrect email or password' do
-    restaurant_user = create(:restaurant_user)
+    restaurant_user = create(:restaurant).restaurant_users.first
 
     post '/restaurant_users/login', params: {
       restaurant_user: {

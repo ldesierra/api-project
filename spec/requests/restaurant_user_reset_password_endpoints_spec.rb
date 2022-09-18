@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'restaurant_user reset password endpoints', type: :request do
   scenario 'with correct token sent back' do
-    restaurant_user = create(:restaurant_user)
+    restaurant_user = create(:restaurant).restaurant_users.first
 
     post '/restaurant_users/password', params: {
       restaurant_user: {
@@ -41,7 +41,7 @@ RSpec.describe 'restaurant_user reset password endpoints', type: :request do
   end
 
   scenario 'with incorrect token sent back' do
-    restaurant_user = create(:restaurant_user)
+    restaurant_user = create(:restaurant).restaurant_users.first
 
     post '/restaurant_users/password', params: {
       restaurant_user: {

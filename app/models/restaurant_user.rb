@@ -9,12 +9,10 @@ class RestaurantUser < ApplicationRecord
   belongs_to :restaurant
 
   validates :email, :phone_number, presence: true, uniqueness: true
-
   validates_presence_of :name, :role
-
+  validates_presence_of :password, if: :confirmed?
   validates_length_of :password, minimum: 8, if: :confirmed?
-  validates_confirmation_of :password, if: :confirmed?
-
+  validates_confirmation_of :password
   validates_format_of :email, with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
   validates_format_of :phone_number, with: /\A\+598\d{8}\z/
 

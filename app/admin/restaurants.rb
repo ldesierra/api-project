@@ -1,6 +1,6 @@
 ActiveAdmin.register Restaurant do
   permit_params :name, :description, :status, :location, :phone_number,
-                restaurant_users_attributes: [:id, :email, :name, :phone_number, :_destroy],
+                restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
                 open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy]
 
   filter :name
@@ -90,6 +90,7 @@ ActiveAdmin.register Restaurant do
         user.input :name
         user.input :email
         user.input :phone_number
+        user.input :role
       end
 
       f.has_many :open_hours, allow_destroy: true do |hour|

@@ -4,6 +4,6 @@ FactoryBot.define do
     email { Faker::Internet.email }
     phone_number { '+59899999999' }
     password { Faker::Internet.password(min_length: 8) }
-    restaurant
+    role { :manager }
   end
 end
