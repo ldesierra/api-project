@@ -22,14 +22,14 @@ jobs:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: noLoTires_Back_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: ''
           POSTGRES_HOST_AUTH_METHOD: trust
     environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
+      BUNDLE_JOBS: '3'
+      BUNDLE_RETRY: '3'
       PGHOST: 127.0.0.1
       PGUSER: postgres
-      PGPASSWORD: ""
+      PGPASSWORD: ''
       RAILS_ENV: test
     steps:
       - checkout
@@ -68,6 +68,8 @@ workflows:
           context: staging
           app-name: $HEROKU_NAME_API
           name: deploy-to-staging
+          post-deploy:
+            - run: heroku run rake db:migrate --app $HEROKU_NAME_API
           requires:
             - test
           filters:
@@ -78,6 +80,8 @@ workflows:
           context: pre
           app-name: $HEROKU_NAME_API
           name: deploy-to-pre
+          post-deploy:
+            - run: heroku run rake db:migrate --app $HEROKU_NAME_API
           requires:
             - test
           filters:
@@ -96,6 +100,8 @@ workflows:
           context: production
           app-name: $HEROKU_NAME_API
           name: deploy-to-production
+          post-deploy:
+            - run: heroku run rake db:migrate --app $HEROKU_NAME_API
           requires:
             - hold-deploy-to-production
           filters:
