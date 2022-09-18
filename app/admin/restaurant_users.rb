@@ -6,6 +6,14 @@ ActiveAdmin.register RestaurantUser do
   filter :role, as: :select
   filter :restaurant_id
 
+  after_action :confirm_user, only: [:create]
+
+  controller do
+    def confirm_user
+      resource.confirm if resource.valid?
+    end
+  end
+
   index do
     id_column
     column :email

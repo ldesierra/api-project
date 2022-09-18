@@ -17,6 +17,8 @@ class RestaurantUser < ApplicationRecord
 
   enum role: { manager: 0, employee: 1 }
 
+  before_create :skip_confirmation_notification!
+
   def no_errors?
     errors.empty?
   end

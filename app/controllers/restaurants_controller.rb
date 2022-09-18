@@ -1,11 +1,13 @@
 class RestaurantsController < ApplicationController
   respond_to :json
 
+  protect_from_forgery with: :null_session
+  skip_before_action :verify_authenticity_token
+
   def new; end
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    restaurant_manager.skip_confirmation_notification!
 
     if @restaurant.save
       render json: { message: 'Restaurant solicited correctly' }, status: :ok
@@ -16,10 +18,6 @@ class RestaurantsController < ApplicationController
   end
 
   private
-
-  def restaurant_manager
-    @restaurant.restaurant_users.first
-  end
 
   def restaurant_params
     params.require(:restaurant).permit(:name, :phone_number, :location,
