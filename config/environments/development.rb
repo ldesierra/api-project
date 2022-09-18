@@ -56,6 +56,21 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    user_name: ENV['MAILTRAP_USERNAME'],
+    password: ENV['MAILTRAP_PASSWORD'],
+    address: ENV['MAILTRAP_ADDRESS'],
+    domain: ENV['MAILTRAP_DOMAIN'],
+    port: ENV['MAILTRAP_SMTP_PORT'],
+    authentication: :plain
+  }
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.raise_delivery_errors = false
+
+  config.action_mailer.perform_caching = false
+
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   config.assets.debug = true
 
