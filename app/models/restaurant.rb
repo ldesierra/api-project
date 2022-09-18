@@ -6,8 +6,7 @@ class Restaurant < ApplicationRecord
 
   accepts_nested_attributes_for :restaurant_users, :open_hours
 
-  # validates_presence_of :name, :restaurant_users
-  validates_presence_of :name
+  validates :name, presence: true, uniqueness: true
 
   enum status: [:pending, :incomplete, :inactive, :active]
 
