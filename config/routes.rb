@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     delete '/restaurant_users/sign_out', to: 'restaurant_sessions#destroy'
     post '/restaurant_users/password', to: 'restaurant_passwords#create'
     put '/restaurant_users/password', to: 'restaurant_passwords#update'
+    get '/restaurant_users/accept_invite', to: 'restaurant_invitations#edit'
+    put '/restaurant_users/confirm_invite', to: 'restaurant_invitations#update'
   end
 
   devise_for :customers, skip: %i[registrations sessions passwords]
@@ -19,6 +21,8 @@ Rails.application.routes.draw do
     post '/customers/password', to: 'customer_passwords#create'
     put '/customers/password', to: 'customer_passwords#update'
   end
+
+  resource :restaurants, only: [:new, :create]
 
   root to: 'home#index'
   get '/admin', to: 'admin/dashboard#index'

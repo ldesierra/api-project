@@ -1,0 +1,16 @@
+<%= stylesheet_link_tag 'active_admin' %>
+  <fieldset class='inputs'>
+    <% @restaurants.each do |restaurant| %>
+      <ol>
+        <li class='file input optional'>
+          Restaurante: <%= restaurant.name %>
+          <%= link_to "Ver ", admin_restaurant_path(restaurant) %>
+        </li>
+      </ol>
+    <% end %>
+    <% if @restaurants.empty? %>
+      <div class="alert alert-danger">
+        <p>No hay Restaurantes pendientes</p>
+      </div>
+    <% end %>
+  </fieldset>

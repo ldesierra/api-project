@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Restaurant user sign in endpoint', type: :request do
   scenario 'with correct email and password' do
     restaurant_user = create(:restaurant_user)
+    restaurant_user.confirm
 
     post '/restaurant_users/login', params: {
       restaurant_user: {
@@ -10,7 +11,6 @@ RSpec.describe 'Restaurant user sign in endpoint', type: :request do
         password: restaurant_user.password
       }
     }
-
     # response should have HTTP Status 200 Ok
     expect(response.status).to eq(200)
 

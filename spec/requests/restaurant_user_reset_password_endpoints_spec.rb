@@ -12,7 +12,7 @@ RSpec.describe 'restaurant_user reset password endpoints', type: :request do
 
     mail_sent = ActionMailer::Base.deliveries.last
 
-    token = ActionMailer::Base.deliveries.first.body.match(%r{/\?token=([\w-]*)})[1]
+    token = mail_sent.body.match(%r{/\?token=([\w-]*)})[1]
 
     # response should have HTTP Status 200 Ok
     expect(response.status).to eq(200)
@@ -50,8 +50,6 @@ RSpec.describe 'restaurant_user reset password endpoints', type: :request do
     }
 
     mail_sent = ActionMailer::Base.deliveries.last
-
-    ActionMailer::Base.deliveries.first.body.match(%r{/\?token=(\w*)})[1]
 
     # response should have HTTP Status 200 Ok
     expect(response.status).to eq(200)

@@ -355,6 +355,8 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    solidservice (1.0.0)
+      activesupport (> 5)
     spring (4.0.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -435,6 +437,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   simplecov
+  solidservice
   spring
   sprockets-rails
   twilio-ruby (~> 5.70.0)

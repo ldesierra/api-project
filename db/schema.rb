@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_16_174540) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
 
+  create_table "open_hours", force: :cascade do |t|
+    t.integer "day"
+    t.time "start_time"
+    t.time "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "restaurant_id"
+    t.index ["restaurant_id"], name: "index_open_hours_on_restaurant_id"
+  end
+
   create_table "restaurant_users", force: :cascade do |t|
     t.string "name"
     t.integer "role", default: 0
@@ -81,12 +91,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
     t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
     t.string "jti"
-    t.string "otp_access_token"
-    t.string "phone_number"
     t.bigint "restaurant_id"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.string "otp_access_token"
+    t.string "phone_number"
     t.index ["confirmation_token"], name: "index_restaurant_users_on_confirmation_token", unique: true
     t.index ["deleted_at"], name: "index_restaurant_users_on_deleted_at"
     t.index ["email"], name: "index_restaurant_users_on_email", unique: true
@@ -101,12 +111,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_08_011141) do
   create_table "restaurants", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
-    t.boolean "active", default: false
+    t.integer "status", default: 0
+    t.integer "phone_number"
+    t.string "location"
+    t.string "logo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_restaurants_on_deleted_at"
   end
 
+  add_foreign_key "open_hours", "restaurants"
   add_foreign_key "restaurant_users", "restaurants"
 end

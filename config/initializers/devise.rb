@@ -206,7 +206,7 @@ Devise.setup do |config|
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
   # db field (see migrations). Until confirmed, new email is stored in
   # unconfirmed_email column, and copied to email column on successful confirmation.
-  config.reconfirmable = true
+  config.reconfirmable = false
 
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [:email]
@@ -357,11 +357,19 @@ Devise.setup do |config|
     jwt.secret = Rails.application.credentials.jwt_secret
     jwt.dispatch_requests = if ENV['DISABLE_2FA'].present?
                               [['POST',
-                                %r{^/restaurant_users/login$}]]
+                                %r{^/restaurant_users/login$}],
+                               [
+                                 'PUT',
+                                 %r{^/restaurant_users/confirm_invite$}
+                               ]]
                             else
                               [[
                                 'POST', %r{^/restaurant_users/two_factor$}
-                              ]]
+                              ],
+                               [
+                                 'PUT',
+                                 %r{^/restaurant_users/confirm_invite$}
+                               ]]
                             end
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]

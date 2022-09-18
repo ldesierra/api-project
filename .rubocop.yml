@@ -37,6 +37,8 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   CountComments: false # count full line comments?
   Max: 24
+  Exclude:
+    - app/controllers/restaurant_invitations_controller.rb
 
 Metrics/ModuleLength:
   CountComments: false # count full line comments?
