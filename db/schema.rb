@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_18_155812) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_18_185834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -99,7 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_155812) do
     t.string "phone_number"
     t.index ["confirmation_token"], name: "index_restaurant_users_on_confirmation_token", unique: true
     t.index ["deleted_at"], name: "index_restaurant_users_on_deleted_at"
-    t.index ["email"], name: "index_restaurant_users_on_email", unique: true
+    t.index ["email", "deleted_at"], name: "index_restaurant_users_on_email_and_deleted_at", unique: true
     t.index ["invitation_token"], name: "index_restaurant_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_restaurant_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_restaurant_users_on_invited_by"
@@ -115,11 +115,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_155812) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "status", default: 0
-    t.integer "phone_number"
     t.string "location"
     t.string "logo"
+    t.string "phone_number"
     t.index ["deleted_at"], name: "index_restaurants_on_deleted_at"
-    t.index ["name"], name: "index_restaurants_on_name", unique: true
+    t.index ["name", "deleted_at", "location"], name: "index_restaurants_on_name_and_deleted_at_and_location", unique: true
   end
 
   add_foreign_key "open_hours", "restaurants"

@@ -1,7 +1,12 @@
 ActiveAdmin.register Restaurant do
-  permit_params :name, :description, :status, :location,
+  permit_params :name, :description, :status, :location, :phone_number,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :_destroy],
                 open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy]
+
+  filter :name
+  filter :phone_number
+  filter :location
+  filter :status
 
   action_item :pending_restaurants, only: :index do
     link_to 'Solicitudes de restaurantes', pending_restaurants_admin_restaurants_path
@@ -54,6 +59,7 @@ ActiveAdmin.register Restaurant do
       row :description
       row :status
       row :location
+      row :phone_number
       panel 'restaurant users' do
         table_for restaurant.restaurant_users do
           column :name
@@ -79,6 +85,7 @@ ActiveAdmin.register Restaurant do
       f.input :description
       f.input :status
       f.input :location
+      f.input :phone_number
       f.has_many :restaurant_users, allow_destroy: true do |user|
         user.input :name
         user.input :email

@@ -15,6 +15,9 @@ class RestaurantUser < ApplicationRecord
   validates_length_of :password, minimum: 8, if: :confirmed?
   validates_confirmation_of :password, if: :confirmed?
 
+  validates_format_of :email, with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+  validates_format_of :phone_number, with: /\A\+598\d{8}\z/
+
   enum role: { manager: 0, employee: 1 }
 
   before_create :skip_confirmation_notification!
