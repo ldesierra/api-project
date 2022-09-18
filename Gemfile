@@ -15,6 +15,7 @@ gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 
 gem 'activeadmin'
+gem 'cancancan'
 gem 'devise'
 gem 'devise_invitable', '~> 2.0.0'
 gem 'devise-jwt'
