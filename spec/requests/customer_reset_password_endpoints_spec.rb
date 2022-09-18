@@ -12,7 +12,7 @@ RSpec.describe 'Customer reset password endpoints', type: :request do
 
     mail_sent = ActionMailer::Base.deliveries.last
 
-    token = ActionMailer::Base.deliveries.first.body.match(%r{/\?token=([\w-]*)})[1]
+    token = ActionMailer::Base.deliveries.first.body.match(/\?token=([\w-]*)/)[1]
 
     # response should have HTTP Status 200 Ok
     expect(response.status).to eq(200)
