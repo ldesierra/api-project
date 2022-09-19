@@ -1,6 +1,6 @@
 ActiveAdmin.register Pack do
   permit_params :name, :stock, :description, :price, :restaurant_id,
-                pack_categories_attributes: [:id, :pack_id, :category_id, :_destroy]
+                category_ids: []
 
   filter :name
   filter :stock
@@ -39,15 +39,8 @@ ActiveAdmin.register Pack do
       f.input :stock
       f.input :description
       f.input :price
-      f.input :restaurant_id, as: :select,
-                              collection: Restaurant.pluck(:name, :id)
-      f.has_many :pack_categories,
-                 heading: 'Categories',
-                 new_record: 'Añadir Category',
-                 remove_record: 'Quitar',
-                 allow_destroy: true do |c|
-        c.input :category
-      end
+      f.input :restaurant
+      f.input :categories, as: :check_boxes, collection: Category.all
     end
     f.actions
   end
