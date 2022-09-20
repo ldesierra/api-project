@@ -15,6 +15,8 @@ class Restaurant < ApplicationRecord
 
   enum status: [:pending, :incomplete, :inactive, :active]
 
+  mount_base64_uploader :logo, ImageUploader
+
   def complete?
     inactive? || active?
   end

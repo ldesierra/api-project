@@ -1,12 +1,26 @@
 class RestaurantsController < ApplicationController
   respond_to :json
 
+  include Pagy::Backend
+  after_action { pagy_headers_merge(@pagy) if @pagy }
+
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
 
   load_and_authorize_resource
 
   def new; end
+
+  def index
+    items = params[:items].presence || Pagy::DEFAULT[:items]
+    page = params[:page].presence || Pagy::DEFAULT[:page]
+
+    @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
+
+    respond_to do |format|
+      format.json
+    end
+  end
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
