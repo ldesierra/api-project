@@ -1,5 +1,5 @@
 ActiveAdmin.register Category do
-  permit_params :name, pack_categories_attributes: [:id, :pack_id, :category_id, :_destroy]
+  permit_params :name
 
   filter :name
 

@@ -1,8 +1,7 @@
 ActiveAdmin.register Restaurant do
   permit_params :name, :description, :status, :location, :phone_number,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
-                open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy],
-                packs_attributes: [:id, :name, :stock, :description, :price, :_destroy]
+                open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy]
 
   filter :name
   filter :phone_number
