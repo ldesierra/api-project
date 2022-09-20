@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   devise_scope :restaurant_user do
     post '/restaurant_users/login', to: 'restaurant_sessions#create'
     post '/restaurant_users/two_factor', to: 'restaurant_sessions#two_factor'
+    post '/restaurant_users/request_two_factor', to: 'restaurant_sessions#request_two_factor'
     delete '/restaurant_users/sign_out', to: 'restaurant_sessions#destroy'
     post '/restaurant_users/password', to: 'restaurant_passwords#create'
     put '/restaurant_users/password', to: 'restaurant_passwords#update'
@@ -25,5 +26,4 @@ Rails.application.routes.draw do
   resource :restaurants, only: [:new, :create]
 
   root to: 'home#index'
-  get '/admin', to: 'admin/dashboard#index'
 end

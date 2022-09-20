@@ -60,7 +60,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_141159) do
     t.string "last_name"
     t.string "phone"
     t.string "username"
-    t.string "avatar"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -68,6 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_141159) do
     t.datetime "updated_at", null: false
     t.string "jti"
     t.datetime "deleted_at"
+    t.string "avatar"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["jti"], name: "index_customers_on_jti", unique: true
@@ -121,6 +121,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_20_141159) do
     t.datetime "confirmation_sent_at"
     t.string "otp_access_token"
     t.string "phone_number"
+    t.datetime "last_sent_otp"
     t.index ["confirmation_token"], name: "index_restaurant_users_on_confirmation_token", unique: true
     t.index ["deleted_at"], name: "index_restaurant_users_on_deleted_at"
     t.index ["email", "deleted_at"], name: "index_restaurant_users_on_email_and_deleted_at", unique: true

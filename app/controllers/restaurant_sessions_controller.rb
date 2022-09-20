@@ -10,6 +10,29 @@ class RestaurantSessionsController < Devise::SessionsController
     request.session_options[:skip] = true
   end
 
+  def request_two_factor
+    token = decrypt_param_token(params[:access_token])
+
+    if token.present?
+      user = user_by_token(token)
+      user_otp_access_token = (JSON.parse token)['access_token']
+
+      error = 'Invalid request' unless user_otp_access_token == user.otp_access_token
+    else
+      error = 'Invalid request'
+    end
+
+    if error.present?
+      render json: { message: error }, status: 401
+    elsif invalid_two_factor_time(user)
+      render json: { message: 'Ya ha solicitado un código en los últimos 2 minutos' }, status: 401
+    else
+      encrypted_token = start_2fa_authentication(user.email)
+
+      render json: { access_token: encrypted_token }, status: 200
+    end
+  end
+
   def two_factor
     token = decrypt_param_token(params[:access_token])
 
@@ -43,12 +66,14 @@ class RestaurantSessionsController < Devise::SessionsController
 
     return render json: { message: 'Wrong email or password' } unless resource.present?
 
-    if ENV['DISABLE_2FA'].blank?
+    if ENV['DISABLE_2FA'].blank? && !invalid_two_factor_time(resource)
       encrypted_token = start_2fa_authentication(params[:restaurant_user][:email])
 
       render json: { access_token: encrypted_token }, status: 200
-    else
+    elsif ENV['DISABLE_2FA'].present?
       respond_with resource
+    else
+      render json: { message: 'Ya ha solicitado un código en los últimos 2 minutos' }, status: 401
     end
   end
 
@@ -64,9 +89,14 @@ class RestaurantSessionsController < Devise::SessionsController
 
   private
 
+  def invalid_two_factor_time(user)
+    user.last_sent_otp.present? && user.last_sent_otp > DateTime.current - 2.minutes
+  end
+
   def start_2fa_authentication(user_email)
     restaurant_user = RestaurantUser.find_by(email: user_email)
     restaurant_user.update_column(:otp_access_token, SecureRandom.hex)
+    restaurant_user.update_column(:last_sent_otp, DateTime.current)
 
     Twilio::GenerateCode.call(restaurant_user.phone_number)
 
