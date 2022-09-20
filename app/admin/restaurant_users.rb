@@ -5,16 +5,17 @@ ActiveAdmin.register RestaurantUser do
 
   filter :email
   filter :name
-  filter :role, as: :select
-  filter :restaurant_id
+  filter :role, as: :select, collection: RestaurantUser.roles
+  filter :restaurant
 
   index do
+    selectable_column
     id_column
     column :email
     column :name
     column :role
     column :phone_number
-    column :restaurant_id
+    column :restaurant
     actions
   end
 
@@ -24,7 +25,7 @@ ActiveAdmin.register RestaurantUser do
       row :name
       row :role
       row :phone_number
-      row :restaurant_id
+      row :restaurant
     end
   end
 
@@ -36,8 +37,7 @@ ActiveAdmin.register RestaurantUser do
       f.input :name
       f.input :role
       f.input :phone_number
-      f.input :restaurant_id, as: :select,
-                              collection: Restaurant.pluck(:name, :id)
+      f.input :restaurant
     end
     f.actions
   end

@@ -1,6 +1,7 @@
 class Restaurant < ApplicationRecord
   has_many :restaurant_users, dependent: :destroy
   has_many :open_hours, dependent: :destroy
+  has_many :packs, dependent: :destroy
 
   acts_as_paranoid
 

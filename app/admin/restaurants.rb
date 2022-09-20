@@ -53,6 +53,18 @@ ActiveAdmin.register Restaurant do
     end
   end
 
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :description
+    column :status
+    column :location
+    column :logo
+    column :phone_number
+    actions
+  end
+
   show do
     attributes_table do
       row :name
@@ -60,7 +72,7 @@ ActiveAdmin.register Restaurant do
       row :status
       row :location
       row :phone_number
-      panel 'restaurant users' do
+      panel 'Restaurant users' do
         table_for restaurant.restaurant_users do
           column :name
           column :email
@@ -68,11 +80,20 @@ ActiveAdmin.register Restaurant do
         end
       end
 
-      panel 'open hours' do
+      panel 'Open hours' do
         table_for restaurant.open_hours do
           column :day
           column :start_time
           column :end_time
+        end
+      end
+
+      panel 'Packs' do
+        table_for restaurant.packs do
+          column :name
+          column :stock
+          column :description
+          column :price
         end
       end
     end

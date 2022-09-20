@@ -7,6 +7,7 @@ ActiveAdmin.register Customer do
   filter :username
 
   index do
+    selectable_column
     id_column
     column :email
     column :first_name
