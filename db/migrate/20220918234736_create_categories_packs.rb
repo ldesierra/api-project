@@ -1,11 +1,11 @@
 class CreateCategoriesPacks < ActiveRecord::Migration[7.0]
   def change
     create_table :categories_packs, id: false do |t|
-      t.bigint :category_id
-      t.bigint :pack_id
+      t.references :category, null: false, foreign_key: true
+      t.references :pack, null: false, foreign_key: true
     end
 
-    add_index :categories_packs, :category_id
-    add_index :categories_packs, :pack_id
+    add_reference :categories_packs, :packs, foreign_key: true
+    add_reference :categories_packs, :categories, foreign_key: true
   end
 end

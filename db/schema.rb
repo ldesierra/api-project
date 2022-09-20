@@ -47,10 +47,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
   end
 
   create_table "categories_packs", id: false, force: :cascade do |t|
-    t.bigint "category_id"
-    t.bigint "pack_id"
+    t.bigint "category_id", null: false
+    t.bigint "pack_id", null: false
+    t.bigint "packs_id"
+    t.bigint "categories_id"
+    t.index ["categories_id"], name: "index_categories_packs_on_categories_id"
     t.index ["category_id"], name: "index_categories_packs_on_category_id"
     t.index ["pack_id"], name: "index_categories_packs_on_pack_id"
+    t.index ["packs_id"], name: "index_categories_packs_on_packs_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -146,6 +150,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
     t.index ["name", "deleted_at", "location"], name: "index_restaurants_on_name_and_deleted_at_and_location", unique: true
   end
 
+  add_foreign_key "categories_packs", "categories"
+  add_foreign_key "categories_packs", "categories", column: "categories_id"
+  add_foreign_key "categories_packs", "packs"
+  add_foreign_key "categories_packs", "packs", column: "packs_id"
   add_foreign_key "open_hours", "restaurants"
   add_foreign_key "packs", "restaurants"
   add_foreign_key "restaurant_users", "restaurants"
