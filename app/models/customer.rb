@@ -14,4 +14,8 @@ class Customer < ApplicationRecord
   validates_format_of :phone, with: /\A\+598\d{8}\z/
 
   mount_base64_uploader :avatar, ImageUploader
+
+  def jwt_payload
+    super.merge(user_kind: 'Customer')
+  end
 end

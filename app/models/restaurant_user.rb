@@ -27,4 +27,8 @@ class RestaurantUser < ApplicationRecord
   def full_messages_for_errors
     errors.full_messages
   end
+
+  def jwt_payload
+    super.merge(user_kind: role.capitalize)
+  end
 end
