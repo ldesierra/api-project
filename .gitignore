@@ -37,3 +37,6 @@
 
 # Ignore dump.rdb
 /dump.rdb
+
+# Ignore image uploads
+/public/uploads

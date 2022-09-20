@@ -27,6 +27,11 @@ gem 'sprockets-rails', require: 'sprockets/railtie'
 
 gem 'sass-rails'
 
+gem 'jbuilder'
+
+gem 'carrierwave'
+gem 'carrierwave-base64'
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
@@ -91,4 +96,8 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
+end
+
+group :production do
+  gem 'fog-aws'
 end

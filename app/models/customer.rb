@@ -12,4 +12,6 @@ class Customer < ApplicationRecord
   validates_length_of :password, minimum: 8
   validates_format_of :email, with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
   validates_format_of :phone, with: /\A\+598\d{8}\z/
+
+  mount_base64_uploader :avatar, ImageUploader
 end
