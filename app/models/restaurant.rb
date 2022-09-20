@@ -5,11 +5,13 @@ class Restaurant < ApplicationRecord
 
   acts_as_paranoid
 
-  accepts_nested_attributes_for :restaurant_users, :open_hours
+  accepts_nested_attributes_for :restaurant_users, :open_hours, allow_destroy: true
 
-  validates_presence_of :name
+  validates_presence_of :name, :phone_number, :status
+  validates_format_of :phone_number, with: /\A\+598\d{8}\z/
 
-  validate :manager_present
+  validate :manager_present_on_create, on: :create
+  validate :manager_present_on_update, on: :update
 
   enum status: [:pending, :incomplete, :inactive, :active]
 
@@ -19,10 +21,16 @@ class Restaurant < ApplicationRecord
 
   private
 
-  def manager_present
-    restaurant_users.each do |user|
-      return true if user.manager?
-    end
+  def manager_present_on_update
+    managers = restaurant_users.select(&:manager?)
+
+    return true unless managers.all?(&:marked_for_destruction?)
+
+    errors.add(:restaurant, 'Debe existir algun usuario manager')
+  end
+
+  def manager_present_on_create
+    return true if restaurant_users.any?(&:manager?)
 
     errors.add(:restaurant, 'Debe existir algun usuario manager')
   end

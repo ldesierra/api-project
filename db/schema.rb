@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_20_141159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,12 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
   create_table "categories_packs", id: false, force: :cascade do |t|
     t.bigint "category_id", null: false
     t.bigint "pack_id", null: false
-    t.bigint "packs_id"
-    t.bigint "categories_id"
-    t.index ["categories_id"], name: "index_categories_packs_on_categories_id"
     t.index ["category_id"], name: "index_categories_packs_on_category_id"
     t.index ["pack_id"], name: "index_categories_packs_on_pack_id"
-    t.index ["packs_id"], name: "index_categories_packs_on_packs_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -142,7 +138,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
-    t.integer "status", default: 0
+    t.integer "status", default: 0, null: false
     t.string "location"
     t.string "logo"
     t.string "phone_number"
@@ -151,9 +147,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
   end
 
   add_foreign_key "categories_packs", "categories"
-  add_foreign_key "categories_packs", "categories", column: "categories_id"
   add_foreign_key "categories_packs", "packs"
-  add_foreign_key "categories_packs", "packs", column: "packs_id"
   add_foreign_key "open_hours", "restaurants"
   add_foreign_key "packs", "restaurants"
   add_foreign_key "restaurant_users", "restaurants"

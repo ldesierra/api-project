@@ -5,6 +5,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     post '/restaurants', params: {
       restaurant: {
         name: 'Test',
+        phone_number: '+59899999999',
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',
@@ -59,6 +60,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     post '/restaurants', params: {
       restaurant: {
         name: 'Test',
+        phone_number: '+59899999999',
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',
@@ -112,6 +114,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     post '/restaurants', params: {
       restaurant: {
         name: 'Test',
+        phone_number: '+59899999999',
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',
