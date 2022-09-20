@@ -40,6 +40,8 @@ ActiveAdmin.register Pack do
       f.input :description
       f.input :price
       f.input :restaurant
+    end
+    f.inputs 'Categories' do
       f.input :categories, as: :check_boxes, collection: Category.all
     end
     f.actions

@@ -1,7 +1,5 @@
 class Category < ApplicationRecord
-  has_many :pack_categories, dependent: :destroy
-  has_many :packs, through: :pack_categories
-  accepts_nested_attributes_for :pack_categories, allow_destroy: true
+  has_and_belongs_to_many :packs
 
   validates :name, presence: true, uniqueness: true
 end

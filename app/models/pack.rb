@@ -1,8 +1,6 @@
 class Pack < ApplicationRecord
   belongs_to :restaurant
-  has_many :pack_categories, dependent: :destroy
-  has_many :categories, through: :pack_categories
-  accepts_nested_attributes_for :pack_categories, allow_destroy: true
+  has_and_belongs_to_many :categories
 
   validates_presence_of :name, :stock, :price
 end

@@ -5,7 +5,7 @@ ActiveAdmin.register RestaurantUser do
 
   filter :email
   filter :name
-  filter :role, as: :select
+  filter :role, as: :select, collection: RestaurantUser.roles
   filter :restaurant
 
   index do

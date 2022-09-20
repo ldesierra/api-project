@@ -46,6 +46,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "categories_packs", id: false, force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "pack_id"
+    t.index ["category_id"], name: "index_categories_packs_on_category_id"
+    t.index ["pack_id"], name: "index_categories_packs_on_pack_id"
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -75,15 +82,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
     t.datetime "updated_at", null: false
     t.bigint "restaurant_id"
     t.index ["restaurant_id"], name: "index_open_hours_on_restaurant_id"
-  end
-
-  create_table "pack_categories", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "pack_id"
-    t.bigint "category_id"
-    t.index ["category_id"], name: "index_pack_categories_on_category_id"
-    t.index ["pack_id"], name: "index_pack_categories_on_pack_id"
   end
 
   create_table "packs", force: :cascade do |t|
@@ -149,8 +147,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_18_234736) do
   end
 
   add_foreign_key "open_hours", "restaurants"
-  add_foreign_key "pack_categories", "categories"
-  add_foreign_key "pack_categories", "packs"
   add_foreign_key "packs", "restaurants"
   add_foreign_key "restaurant_users", "restaurants"
 end
