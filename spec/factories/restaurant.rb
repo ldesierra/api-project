@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :restaurant do
     name { Faker::Name.first_name }
-    status { :pending }
+    status { :active }
     phone_number { '+59899999999' }
 
     before(:create) do |restaurant|

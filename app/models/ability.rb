@@ -5,6 +5,7 @@ class Ability
 
   def initialize(user)
     can :create, Restaurant
+    can :read, Restaurant, status: :active
 
     return if user.blank?
 
