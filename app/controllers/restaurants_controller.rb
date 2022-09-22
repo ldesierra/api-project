@@ -11,6 +11,8 @@ class RestaurantsController < ApplicationController
 
   def new; end
 
+  def show; end
+
   def index
     items = params[:items].presence || Pagy::DEFAULT[:items]
     page = params[:page].presence || Pagy::DEFAULT[:page]
