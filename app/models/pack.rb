@@ -5,5 +5,5 @@ class Pack < ApplicationRecord
   validates :price, comparison: { greater_than: 0 }
   validates :stock, comparison: { greater_than_or_equal_to: 0 }
 
-  validates_presence_of :name, :stock, :price
+  validates_presence_of :name, :stock, :price, :full_description, :short_description
 end
