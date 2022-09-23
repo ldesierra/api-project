@@ -10,16 +10,16 @@ class RestaurantInvitationsController < Devise::InvitationsController
   def update
     load_restaurant_user
 
-    unless restaurant_active
+    unless @restaurant_user.blank? || restaurant_active
       update_restaurant
 
-      return respond_with_errors(resource) unless @restaurant.valid?
+      return respond_with_restaurant_errors unless @restaurant.valid?
     end
 
     self.resource = accept_resource
 
     if resource.no_errors?
-      @restaurant.save unless restaurant_active
+      setup_restaurant unless restaurant_active
 
       insecure_sign_in_if_allowed(resource_name, resource)
 
@@ -35,6 +35,10 @@ class RestaurantInvitationsController < Devise::InvitationsController
     render json: { message: resource.full_messages_for_errors }, status: 422
   end
 
+  def respond_with_restaurant_errors
+    render json: { message: @restaurant.errors.full_messages }, status: 422
+  end
+
   def insecure_sign_in_if_allowed(resource_name, resource)
     return unless resource.class.allow_insecure_sign_in_after_accept
 
@@ -46,17 +50,28 @@ class RestaurantInvitationsController < Devise::InvitationsController
     @restaurant_user.restaurant.complete?
   end
 
+  def setup_restaurant
+    @restaurant.save
+    @restaurant.active!
+  end
+
   def load_restaurant_user
-    @restaurant_user = RestaurantUser.find(params[:id])
+    @restaurant_user = RestaurantUser.find_by_invitation_token(invitation_token, true)
   end
 
   def update_restaurant
+    return unless resource.present?
+
     @restaurant = Restaurant.find(resource.restaurant_id)
     @restaurant.assign_attributes(restaurant_params)
   end
 
+  def invitation_token
+    params.require(:restaurant_user)[:invitation_token]
+  end
+
   def restaurant_params
-    params.require(:restaurant).permit(:id, :name, :description, :status, :logo,
+    params.require(:restaurant).permit(:id, :name, :description, :status, :logo, :phone_number,
                                        open_hours_attributes: [:start_time, :end_time, :day])
   end
 end

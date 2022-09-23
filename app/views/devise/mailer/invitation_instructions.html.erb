@@ -5,7 +5,7 @@
 <% first_manager = '&amp;first_time=true' if @resource.restaurant.incomplete? %>
 
 <p><%= link_to 'Aceptar Invitacion',
-  "#{ENV['APP_HOST']}/restaurant_users/accept_invite?invitation_token=#{@token}&&id=#{@resource.id}#{first_manager}"
+  "#{ENV['APP_HOST']}/restaurant_users/accept_invite?invitation_token=#{@token}#{first_manager}"
   %>
 </p>
 
