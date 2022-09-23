@@ -17,7 +17,11 @@ class RestaurantsController < ApplicationController
     items = params[:items].presence || Pagy::DEFAULT[:items]
     page = params[:page].presence || Pagy::DEFAULT[:page]
 
-    @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
+    begin
+      @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
+    rescue Pagy::OverflowError
+      @restaurants = @pagy
+    end
 
     respond_to do |format|
       format.json
