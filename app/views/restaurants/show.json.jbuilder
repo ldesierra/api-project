@@ -7,4 +7,5 @@ json.restaurant do
   json.status @restaurant.status
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
+  json.packs @restaurant.packs
 end

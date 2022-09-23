@@ -1,7 +1,9 @@
 ActiveAdmin.register Restaurant do
   permit_params :name, :description, :status, :location, :phone_number,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
-                open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy]
+                open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy],
+                packs_attributes: [:id, :name, :full_description, :stock, :short_description,
+                                   :price, :_destroy, { category_ids: [] }]
 
   filter :name
   filter :phone_number
@@ -92,8 +94,10 @@ ActiveAdmin.register Restaurant do
         table_for restaurant.packs do
           column :name
           column :stock
-          column :description
+          column :full_description
+          column :short_description
           column :price
+          column :category_ids
         end
       end
     end
@@ -118,6 +122,15 @@ ActiveAdmin.register Restaurant do
         hour.input :day
         hour.input :start_time
         hour.input :end_time
+      end
+
+      f.has_many :packs, allow_destroy: true do |pack|
+        pack.input :name
+        pack.input :stock
+        pack.input :full_description
+        pack.input :short_description
+        pack.input :price
+        pack.input :categories, multiple: true, as: :check_boxes, collection: Category.order(:name)
       end
     end
     f.actions

@@ -19,7 +19,6 @@ ActiveAdmin.register Pack do
     column :short_description
     column :price
     column :restaurant
-    column :categories
     actions
   end
 
@@ -31,7 +30,7 @@ ActiveAdmin.register Pack do
       row :short_description
       row :price
       row :restaurant
-      row :categories
+      row :category_ids
     end
   end
 
@@ -44,9 +43,7 @@ ActiveAdmin.register Pack do
       f.input :short_description
       f.input :price
       f.input :restaurant
-    end
-    f.inputs 'Categories' do
-      f.input :categories, as: :check_boxes, collection: Category.all
+      f.input :categories, multiple: true, as: :check_boxes, collection: Category.order(:name)
     end
     f.actions
   end
