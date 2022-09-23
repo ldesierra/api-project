@@ -1,7 +1,7 @@
 CarrierWave.configure do |config|
   if Rails.env.development? || ENV['DISABLE_S3_STORAGE'].present?
     config.storage = :file
-    config.asset_host = 'http://localhost:3000'
+    config.asset_host = ENV['ASSET_HOST']
   elsif Rails.env.test?
     config.storage = :file
     config.enable_processing = false

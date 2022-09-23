@@ -1,5 +1,5 @@
 ActiveAdmin.register Restaurant do
-  permit_params :name, :description, :status, :location, :phone_number,
+  permit_params :name, :description, :status, :location, :phone_number, :logo,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
                 open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy],
                 packs_attributes: [:id, :name, :full_description, :stock, :short_description,
@@ -74,6 +74,13 @@ ActiveAdmin.register Restaurant do
       row :status
       row :location
       row :phone_number
+      row :logo do |restaurant|
+        if restaurant.logo?
+          image_tag(restaurant.logo.url(:thumb), height: 100)
+        else
+          content_tag(:span, I18n.t('admin.restaurants.no_logo'))
+        end
+      end
       panel 'Restaurant users' do
         table_for restaurant.restaurant_users do
           column :name
@@ -111,6 +118,7 @@ ActiveAdmin.register Restaurant do
       f.input :status
       f.input :location
       f.input :phone_number
+      f.input :logo, hint: f.object[:logo]
       f.has_many :restaurant_users, allow_destroy: true do |user|
         user.input :name
         user.input :email

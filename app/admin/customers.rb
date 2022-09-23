@@ -24,6 +24,13 @@ ActiveAdmin.register Customer do
       row :last_name
       row :phone
       row :username
+      row :avatar do |customer|
+        if customer.avatar?
+          image_tag(customer.avatar.url(:thumb), height: 100)
+        else
+          content_tag(:span, I18n.t('admin.customers.no_avatar'))
+        end
+      end
     end
   end
 
@@ -36,6 +43,7 @@ ActiveAdmin.register Customer do
       f.input :last_name
       f.input :phone
       f.input :username
+      f.input :avatar, hint: f.object[:avatar]
     end
     f.actions
   end

@@ -1,4 +1,9 @@
 es:
+  admin:
+    restaurants:
+      no_logo: "No hay un logo cargado para este restaurante"
+    customers:
+      no_avatar: "No hay un avatar cargado para este cliente"
   activerecord:
     attributes:
       customer:
