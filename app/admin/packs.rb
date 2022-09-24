@@ -1,6 +1,7 @@
 ActiveAdmin.register Pack do
   permit_params :name, :stock, :full_description, :short_description, :price, :restaurant_id,
-                category_ids: []
+                category_ids: [],
+                pictures_attributes: [:id, :imageable_id, :imageable_type, :image, :_destroy]
 
   filter :name
   filter :stock
@@ -31,6 +32,13 @@ ActiveAdmin.register Pack do
       row :price
       row :restaurant
       row :category_ids
+      panel 'Imágenes' do
+        table_for pack.pictures do |_p|
+          column :image do |c|
+            image_tag c.image.try(:thumb).try(:url)
+          end
+        end
+      end
     end
   end
 
@@ -44,6 +52,14 @@ ActiveAdmin.register Pack do
       f.input :price
       f.input :restaurant
       f.input :categories, multiple: true, as: :check_boxes, collection: Category.order(:name)
+      f.has_many :pictures, heading: 'Imágenes' do |p|
+        p.input :image, as: :file, label: 'Imagen', hint: (
+          unless p.object.blank? || p.object.image.blank?
+            p.template.image_tag(p.object.image.try(:thumb).try(:url))
+          end)
+
+        p.input :_destroy, as: :boolean, required: false, label: 'Remover imagen'
+      end
     end
     f.actions
   end

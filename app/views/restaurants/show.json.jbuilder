@@ -7,5 +7,14 @@ json.restaurant do
   json.status @restaurant.status
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
-  json.packs @restaurant.packs
+  json.packs @restaurant.packs do |pack|
+    json.id pack.id
+    json.name pack.name
+    json.stock pack.stock
+    json.short_description pack.short_description
+    json.full_description pack.full_description
+    json.price pack.price
+    json.restaurant_id pack.restaurant_id
+    json.pictures pack.pictures
+  end
 end
