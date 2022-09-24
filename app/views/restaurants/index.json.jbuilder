@@ -8,3 +8,6 @@ json.restaurants @restaurants do |restaurant|
   json.logo restaurant.logo
   json.open_hours restaurant.open_hours
 end
+
+json.page @pagy.page
+json.total_pages @pagy.pages
