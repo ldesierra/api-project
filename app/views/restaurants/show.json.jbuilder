@@ -15,6 +15,6 @@ json.restaurant do
     json.full_description pack.full_description
     json.price pack.price
     json.restaurant_id pack.restaurant_id
-    json.pictures pack.pictures
+    json.picture pack.pictures&.first&.image&.medium&.url
   end
 end
