@@ -19,6 +19,7 @@ class RestaurantUser < ApplicationRecord
   enum role: { manager: 0, employee: 1 }
 
   before_create :skip_confirmation_notification!
+  before_restore :restore_if_restaurant_active
 
   def no_errors?
     errors.empty?
@@ -30,5 +31,13 @@ class RestaurantUser < ApplicationRecord
 
   def jwt_payload
     super.merge(user_kind: role.capitalize)
+  end
+
+  private
+
+  def restore_if_restaurant_active
+    return unless restaurant.blank?
+
+    throw :abort
   end
 end

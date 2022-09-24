@@ -1,4 +1,7 @@
 ActiveAdmin.register RestaurantUser do
+  menu parent: I18n.t('activerecord.models.restaurant_user.other'),
+       priority: 1, url: -> { admin_restaurant_users_url(locale: I18n.locale) }
+
   before_create(&:confirm)
 
   permit_params :email, :password, :name, :role, :phone_number, :restaurant_id

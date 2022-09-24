@@ -5,6 +5,16 @@ es:
     customers:
       no_avatar: "No hay un avatar cargado para este cliente"
   activerecord:
+    models:
+      customer:
+        one: 'Cliente'
+        other: 'Clientes'
+      restaurant:
+        one: 'Restaurante'
+        other: 'Restaurantes'
+      restaurant_user:
+        one: 'Usuario restaurante'
+        other: 'Usuarios restaurante'
     attributes:
       customer:
         email: "Email"

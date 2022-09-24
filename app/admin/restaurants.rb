@@ -1,4 +1,7 @@
 ActiveAdmin.register Restaurant do
+  menu parent: I18n.t('activerecord.models.restaurant.other'),
+       priority: 1, url: -> { admin_restaurants_url(locale: I18n.locale) }
+
   permit_params :name, :description, :status, :location, :phone_number, :logo,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
                 open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy],

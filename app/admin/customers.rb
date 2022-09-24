@@ -1,4 +1,6 @@
 ActiveAdmin.register Customer do
+  menu parent: I18n.t('activerecord.models.customer.other'),
+       priority: 1, url: -> { admin_customers_url(locale: I18n.locale) }
   permit_params :email, :password, :first_name, :last_name, :phone, :username, :avatar
 
   filter :email

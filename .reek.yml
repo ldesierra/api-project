@@ -25,6 +25,7 @@ detectors:
     exclude:
       - "ApplicationController#default_url_options"
       - "Ability#restaurant_user_abilities"
+      - "scoped_collection"
 
 exclude_paths:
   - db/migrate
