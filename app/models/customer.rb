@@ -15,7 +15,25 @@ class Customer < ApplicationRecord
 
   mount_base64_uploader :avatar, ImageUploader
 
+  before_restore :restore_if_unique_email, :restore_if_unique_username
+
   def jwt_payload
     super.merge(user_kind: 'Customer')
+  end
+
+  private
+
+  def restore_if_unique_email
+    return if Customer.without_deleted.where(email: email).size.zero?
+
+    errors.add(:customer, 'No se puede restaurar usuarios con email duplicado')
+    throw :abort
+  end
+
+  def restore_if_unique_username
+    return if Customer.without_deleted.where(username: username).size.zero?
+
+    errors.add(:customer, 'No se puede restaurar usuarios con username duplicado')
+    throw :abort
   end
 end
