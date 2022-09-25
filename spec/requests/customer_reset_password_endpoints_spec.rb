@@ -84,10 +84,6 @@ RSpec.describe 'Customer reset password endpoints', type: :request do
       }
     }
 
-    expect(response.status).to eq(404)
-
-    json = JSON.parse(response.body).deep_symbolize_keys
-
-    expect(json[:message]).to eq('No existe un usuario con ese email')
+    expect(response.status).to eq(200)
   end
 end
