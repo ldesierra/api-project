@@ -35,16 +35,23 @@ class Restaurant < ApplicationRecord
   def geocode_coordinates
     address_match = Geocoder.search(address).first
 
-    return unless address_match.present?
-
-    self.latitude = address_match.latitude
-    self.longitude = address_match.longitude
+    if address_match.present?
+      self.latitude = address_match.latitude
+      self.longitude = address_match.longitude
+    else
+      self.latitude = 0
+      self.longitude = 0
+    end
   end
 
   def geocode_address
     coordinates_match = Geocoder.search([latitude, longitude]).first
 
-    self.address = coordinates_match.address
+    self.address = if coordinates_match.present?
+                     coordinates_match.address
+                   else
+                     'Soul Buoy'
+                   end
   end
 
   def geocode
