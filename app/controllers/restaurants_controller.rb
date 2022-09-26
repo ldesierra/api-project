@@ -14,8 +14,9 @@ class RestaurantsController < ApplicationController
   def show; end
 
   def index
-    items = params[:items].presence || Pagy::DEFAULT[:items]
-    page = params[:page].presence || Pagy::DEFAULT[:page]
+    page, items, clients_latitude, clients_longitude = params_for_index_action
+
+    @restaurants = @restaurants.near([clients_latitude, clients_longitude], 10_000)
 
     begin
       @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
@@ -41,8 +42,18 @@ class RestaurantsController < ApplicationController
 
   private
 
+  def params_for_index_action
+    items = params[:items].presence || Pagy::DEFAULT[:items]
+    page = params[:page].presence || Pagy::DEFAULT[:page]
+
+    clients_latitude = params[:latitude].presence.to_f
+    clients_longitude = params[:longitude].presence.to_f
+
+    [page, items, clients_latitude, clients_longitude]
+  end
+
   def restaurant_params
-    params.require(:restaurant).permit(:name, :phone_number, :location,
+    params.require(:restaurant).permit(:name, :phone_number, :latitude, :longitude,
                                        restaurant_users_attributes: [:name, :email, :phone_number])
   end
 end

@@ -6,6 +6,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
       restaurant: {
         name: 'Test',
         phone_number: '+59899999999',
+        latitude: 0,
+        longitude: 0,
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',
@@ -61,6 +63,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
       restaurant: {
         name: 'Test',
         phone_number: '+59899999999',
+        latitude: 0,
+        longitude: 0,
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',
@@ -115,6 +119,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
       restaurant: {
         name: 'Test',
         phone_number: '+59899999999',
+        latitude: 0,
+        longitude: 0,
         restaurant_users_attributes: {
           '0': {
             email: 'test@email.com',

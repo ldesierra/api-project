@@ -49,6 +49,8 @@ gem 'rails-i18n', '~> 7.0.0'
 
 gem 'pagy', '~> 5.10'
 
+gem 'geocoder'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

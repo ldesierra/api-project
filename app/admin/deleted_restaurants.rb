@@ -28,7 +28,6 @@ ActiveAdmin.register Restaurant, as: 'Deleted Restaurants' do
 
   filter :name
   filter :phone_number
-  filter :location
   filter :status
 
   index do
@@ -37,7 +36,6 @@ ActiveAdmin.register Restaurant, as: 'Deleted Restaurants' do
     column :name
     column :description
     column :status
-    column :location
     column :logo
     column :phone_number
     actions
@@ -48,7 +46,7 @@ ActiveAdmin.register Restaurant, as: 'Deleted Restaurants' do
       row :name
       row :description
       row :status
-      row :location
+      row :address
       row :phone_number
       panel 'Restaurant users' do
         table_for resource.restaurant_users.only_deleted do

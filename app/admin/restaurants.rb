@@ -2,7 +2,8 @@ ActiveAdmin.register Restaurant do
   menu parent: I18n.t('activerecord.models.restaurant.other'),
        priority: 1, url: -> { admin_restaurants_url(locale: I18n.locale) }
 
-  permit_params :name, :description, :status, :location, :phone_number, :logo,
+  permit_params :name, :description, :status, :phone_number, :logo, :address,
+                :latitude, :longitude,
                 restaurant_users_attributes: [:id, :email, :name, :phone_number, :role, :_destroy],
                 open_hours_attributes: [:id, :start_time, :end_time, :day, :_destroy],
                 packs_attributes: [:id, :name, :full_description, :stock, :short_description,
@@ -10,7 +11,6 @@ ActiveAdmin.register Restaurant do
 
   filter :name
   filter :phone_number
-  filter :location
   filter :status
 
   action_item :pending_restaurants, only: :index do
@@ -64,7 +64,6 @@ ActiveAdmin.register Restaurant do
     column :name
     column :description
     column :status
-    column :location
     column :logo
     column :phone_number
     actions
@@ -75,8 +74,8 @@ ActiveAdmin.register Restaurant do
       row :name
       row :description
       row :status
-      row :location
       row :phone_number
+      row :address
       row :logo do |restaurant|
         if restaurant.logo?
           image_tag(restaurant.logo.url(:thumb), height: 100)
@@ -119,8 +118,8 @@ ActiveAdmin.register Restaurant do
       f.input :name
       f.input :description
       f.input :status
-      f.input :location
       f.input :phone_number
+      f.input :address
       f.input :logo, hint: f.object[:logo]
       f.has_many :restaurant_users, allow_destroy: true do |user|
         user.input :name

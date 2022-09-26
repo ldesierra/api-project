@@ -26,7 +26,7 @@ class DeviseMailer < Devise::Mailer
 
     restaurant_attributes = record.restaurant
                                   .attributes
-                                  .slice('name', 'phone_number', 'location')
+                                  .slice('name', 'phone_number', 'address')
                                   .map { |key, value| "restaurant_#{key}=#{value}" }.join('&')
 
     "&#{first_manager}&#{restaurant_attributes}"

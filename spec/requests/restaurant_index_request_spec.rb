@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'restaurants index endpoint', type: :request do
   scenario 'with default pagination' do
-    restaurant1 = create(:restaurant)
+    restaurant1 = create(:restaurant, latitude: 0, longitude: 0)
     restaurant2 = create(:restaurant)
 
     get '/restaurants', as: :json

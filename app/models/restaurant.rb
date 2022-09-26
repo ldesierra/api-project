@@ -7,7 +7,7 @@ class Restaurant < ApplicationRecord
 
   accepts_nested_attributes_for :restaurant_users, :open_hours, :packs, allow_destroy: true
 
-  validates_presence_of :name, :phone_number, :status
+  validates_presence_of :name, :phone_number, :status, :latitude, :longitude
   validates_format_of :phone_number, with: /\A\+598\d{8}\z/
 
   validate :just_one_manager, if: -> { pending? || incomplete? }
@@ -18,11 +18,40 @@ class Restaurant < ApplicationRecord
 
   mount_base64_uploader :logo, ImageUploader
 
+  reverse_geocoded_by :latitude, :longitude
+
+  before_validation :geocode, if: -> {
+                                    :address_changed? ||
+                                      :latitude_changed? ||
+                                      :longitud_changed?
+                                  }
+
   def complete?
     inactive? || active?
   end
 
   private
+
+  def geocode_coordinates
+    address_match = Geocoder.search(address).first
+
+    return unless address_match.present?
+
+    self.latitude = address_match.latitude
+    self.longitude = address_match.longitude
+  end
+
+  def geocode_address
+    coordinates_match = Geocoder.search([latitude, longitude]).first
+
+    self.address = coordinates_match.address
+  end
+
+  def geocode
+    return geocode_coordinates if address_changed?
+
+    geocode_address
+  end
 
   def manager_present_on_update
     managers = restaurant_users.select(&:manager?)
