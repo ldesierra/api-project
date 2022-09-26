@@ -3,6 +3,8 @@ class Pack < ApplicationRecord
   has_and_belongs_to_many :categories
   has_many :pictures, as: :imageable, dependent: :destroy
 
+  acts_as_paranoid
+
   validates :price, comparison: { greater_than: 0 }
   validates :stock, comparison: { greater_than_or_equal_to: 0 }
 

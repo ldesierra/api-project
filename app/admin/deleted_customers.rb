@@ -19,10 +19,10 @@ ActiveAdmin.register Customer, as: 'Deleted Customers' do
   end
 
   member_action :restore, method: :post do
-    if resource.restore
+    if resource.restore && !resource.deleted?
       redirect_to admin_deleted_customers_path, notice: 'Customer restaurado'
     else
-      redirect_to admin_deleted_customers_path, notice: 'Algo salio mal'
+      redirect_to admin_deleted_customers_path, alert: resource.errors.full_messages.to_sentence
     end
   end
 

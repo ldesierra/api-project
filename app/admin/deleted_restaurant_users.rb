@@ -23,7 +23,7 @@ ActiveAdmin.register RestaurantUser, as: 'Deleted Restaurant Users' do
       redirect_to admin_deleted_restaurant_users_path, notice: 'Restaurant User restaurado'
     else
       redirect_to admin_deleted_restaurant_users_path,
-                  alert: 'Restaurante eliminado, no se puede restaurar el usuario'
+                  alert: resource.errors.full_messages.to_sentence
     end
   end
 
@@ -44,7 +44,8 @@ ActiveAdmin.register RestaurantUser, as: 'Deleted Restaurant Users' do
         restaurant = Restaurant.only_deleted.find(user.restaurant_id)
         link_to restaurant.name, admin_deleted_restaurant_path(restaurant)
       else
-        user.restaurant.name
+        restaurant = Restaurant.find(user.restaurant_id)
+        link_to restaurant.name, admin_restaurant_path(restaurant)
       end
     end
     actions

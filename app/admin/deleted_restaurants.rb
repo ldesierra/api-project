@@ -65,10 +65,10 @@ ActiveAdmin.register Restaurant, as: 'Deleted Restaurants' do
       end
 
       panel 'Packs' do
-        table_for resource.packs do
+        table_for resource.packs.only_deleted do
           column :name
           column :stock
-          column :description
+          column :full_description
           column :price
         end
       end

@@ -19,7 +19,7 @@ class RestaurantUser < ApplicationRecord
   enum role: { manager: 0, employee: 1 }
 
   before_create :skip_confirmation_notification!
-  before_restore :restore_if_restaurant_active
+  before_restore :restore_if_unique_email, :restore_if_restaurant_active
 
   def no_errors?
     errors.empty?
@@ -35,9 +35,17 @@ class RestaurantUser < ApplicationRecord
 
   private
 
+  def restore_if_unique_email
+    return if RestaurantUser.without_deleted.where(email: email).size.zero?
+
+    errors.add(:restaurant_user, 'No se puede restaurar usuarios con email duplicado')
+    throw :abort
+  end
+
   def restore_if_restaurant_active
     return unless restaurant.blank?
 
+    errors.add(:restaurant, 'Restaurante eliminado, no se puede restaurar el usuario')
     throw :abort
   end
 end
