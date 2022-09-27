@@ -3,7 +3,7 @@
 <p>Tu solicitud para unirte a No Lo Tires ha sido aceptada. Crea tu usuario con el link de abajo!</p>
 
 <p><%= link_to 'Aceptar Invitacion',
-  "#{ENV['APP_HOST']}/restaurant_users/accept_invite?invitation_token=#{@token}&#{@query}"
+  "#{ENV['APP_HOST']}/manager/accept_invite?invitation_token=#{@token}&#{@query}"
   %>
 </p>
 
