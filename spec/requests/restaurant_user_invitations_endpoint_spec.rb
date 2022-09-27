@@ -41,9 +41,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         invitation_token: token
       },
       restaurant: {
-        status: :active
-      },
-      id: restaurant_user.id
+        description: 'Restaurant description'
+      }
     }
 
     expect(response.status).to eq(200)
@@ -97,9 +96,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         invitation_token: token
       },
       restaurant: {
-        status: :active
-      },
-      id: restaurant_user.id
+        description: 'Restaurant description'
+      }
     }
 
     restaurant_user.reload
@@ -140,6 +138,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
 
     AcceptRestaurant.call(restaurant: restaurant, manager: restaurant_user)
 
+    restaurant.description = 'Restaurant description'
     restaurant.active!
     restaurant.save
 
@@ -157,9 +156,8 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         invitation_token: token
       },
       restaurant: {
-        status: :active
-      },
-      id: restaurant_user.id
+        description: 'Restaurant description'
+      }
     }
 
     restaurant_user.reload
