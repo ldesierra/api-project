@@ -52,7 +52,6 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   def setup_restaurant
     @restaurant.save
-    @restaurant.active!
   end
 
   def load_restaurant_user
@@ -64,6 +63,7 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
     @restaurant = Restaurant.find(resource.restaurant_id)
     @restaurant.assign_attributes(restaurant_params)
+    @restaurant.assign_attributes(status: :active)
   end
 
   def invitation_token

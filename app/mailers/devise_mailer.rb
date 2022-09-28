@@ -16,19 +16,18 @@ class DeviseMailer < Devise::Mailer
   def user_attributes(record)
     record.attributes
           .slice('name', 'email', 'phone_number')
-          .map { |key, value| "#{key}=#{value}" }.join('&')
+          .to_query
   end
 
   def restaurant_attributes(record)
     return unless record.restaurant.incomplete?
 
-    first_manager = 'first_time=true'
-
     restaurant_attributes = record.restaurant
                                   .attributes
                                   .slice('name', 'phone_number', 'address')
-                                  .map { |key, value| "restaurant_#{key}=#{value}" }.join('&')
+                                  .deep_transform_keys { |key| "restaurant_#{key}" }
+                                  .to_query
 
-    "&#{first_manager}&#{restaurant_attributes}"
+    "&first_time=true&#{restaurant_attributes}"
   end
 end
