@@ -4,6 +4,8 @@ json.restaurant do
   json.description @restaurant.description
   json.phone_number @restaurant.phone_number
   json.address @restaurant.address
+  json.latitude @restaurant.latitude
+  json.longitude @restaurant.longitude
   json.status @restaurant.status
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
