@@ -8,6 +8,7 @@ FactoryBot.define do
 
     before(:create) do |restaurant|
       restaurant.restaurant_users << create(:restaurant_user, restaurant: restaurant)
+      restaurant.open_hours << create(:open_hour, restaurant: restaurant)
     end
   end
 end

@@ -41,7 +41,14 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
         invitation_token: token
       },
       restaurant: {
-        description: 'Restaurant description'
+        description: 'Restaurant description',
+        open_hours_attributes: {
+          '0': {
+            day: 'monday',
+            start_time: '00:00',
+            end_time: '02:00'
+          }
+        }
       }
     }
 
@@ -139,6 +146,13 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     AcceptRestaurant.call(restaurant: restaurant, manager: restaurant_user)
 
     restaurant.description = 'Restaurant description'
+    restaurant.open_hours_attributes = {
+      '0': {
+        day: 'monday',
+        start_time: '00:00',
+        end_time: '02:00'
+      }
+    }
     restaurant.active!
     restaurant.save
 

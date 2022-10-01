@@ -8,7 +8,7 @@ class Restaurant < ApplicationRecord
   accepts_nested_attributes_for :restaurant_users, :open_hours, :packs, allow_destroy: true
 
   validates_presence_of :name, :phone_number, :status, :latitude, :longitude, :address
-  validates_presence_of :description, if: :active?
+  validates_presence_of :description, :open_hours, if: :active?
 
   validates_format_of :phone_number, with: /\A\+598\d{8}\z/
 
