@@ -16,11 +16,15 @@ class Ability
     elsif user.employee?
       employee_abilities
     else
-      manager_abilities
+      manager_abilities(user)
     end
   end
 
-  def manager_abilities; end
+  def manager_abilities(user)
+    can :update, Restaurant do |restaurant|
+      restaurant.restaurant_users.include?(user)
+    end
+  end
 
   def employee_abilities; end
 

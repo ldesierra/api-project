@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
-  resources :restaurants, only: [:new, :create, :index, :show]
+  resources :restaurants, only: [:new, :create, :index, :show, :update]
 
   root to: 'home#index'
 end
