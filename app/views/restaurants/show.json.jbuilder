@@ -9,6 +9,11 @@ json.restaurant do
   json.status @restaurant.status
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
+  json.categories @restaurant.categories.uniq do |category|
+    json.name category.name
+    json.id category.id
+  end
+
   json.packs @restaurant.packs do |pack|
     json.id pack.id
     json.name pack.name
@@ -18,5 +23,9 @@ json.restaurant do
     json.price pack.price
     json.restaurant_id pack.restaurant_id
     json.picture pack.pictures&.first&.image&.medium&.url
+    json.categories pack.categories do |category|
+      json.id category.id
+      json.name category.name
+    end
   end
 end
