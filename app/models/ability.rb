@@ -21,6 +21,10 @@ class Ability
   end
 
   def manager_abilities(user)
+    can :destroy, Pack do |pack|
+      pack.restaurant.restaurant_users.include?(user)
+    end
+
     can :update, Restaurant do |restaurant|
       restaurant.restaurant_users.include?(user)
     end

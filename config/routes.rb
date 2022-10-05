@@ -25,5 +25,7 @@ Rails.application.routes.draw do
 
   resources :restaurants, only: [:new, :create, :index, :show, :update]
 
+  resources :packs, only: [:destroy]
+
   root to: 'home#index'
 end
