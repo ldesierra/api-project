@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe 'restaurants index endpoint', type: :request do
-  scenario 'with default pagination' do
+RSpec.describe 'restaurant update endpoint', type: :request do
+  scenario 'with correct params' do
     restaurant = create(:restaurant, address: 'Soul Buoy')
     restaurant_user = restaurant.restaurant_users.first
 

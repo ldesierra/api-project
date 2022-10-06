@@ -23,7 +23,9 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
-  resources :restaurants, only: [:new, :create, :index, :show, :update]
+  resources :restaurants, only: [:new, :create, :index, :show, :update] do
+    resources :packs, only: [:index, :update, :create], module: 'restaurants'
+  end
 
   resources :packs, only: [:destroy]
 
