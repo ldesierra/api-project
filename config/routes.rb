@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
   end
 
-  resources :packs, only: [:destroy]
+  resources :packs, only: [:show, :destroy]
 
   resources :categories, only: [:index]
 

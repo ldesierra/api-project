@@ -1,8 +1,10 @@
 class PacksController < ApplicationController
-  before_action :load_pack, only: :destroy
+  before_action :load_pack, only: [:show, :destroy]
   respond_to :json
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
+
+  def show; end
 
   def destroy
     return render json: { message: 'Pack no encontrado' }, status: 404 if @pack.blank?
