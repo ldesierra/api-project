@@ -4,6 +4,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    can :read, Category
     can :create, Restaurant
     can :read, Pack
     can :read, Restaurant, status: :active

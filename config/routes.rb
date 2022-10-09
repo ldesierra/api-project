@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'categories/index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -28,6 +29,8 @@ Rails.application.routes.draw do
   end
 
   resources :packs, only: [:destroy]
+
+  resources :categories, only: [:index]
 
   root to: 'home#index'
 end
