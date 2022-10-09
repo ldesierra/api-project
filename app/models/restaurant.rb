@@ -33,6 +33,19 @@ class Restaurant < ApplicationRecord
     inactive? || active?
   end
 
+  def main_categories
+    most_common_categories = []
+    categories_ids = categories.pluck(:id)
+
+    most_common_category = categories_ids.max_by { |category| categories.count(category) }
+    most_common_categories << most_common_category
+    categories_ids.delete(most_common_category)
+
+    most_common_categories << categories_ids.max_by { |category| categories.count(category) }
+
+    Category.where(id: most_common_categories)
+  end
+
   private
 
   def geocode_coordinates

@@ -9,7 +9,7 @@ json.restaurant do
   json.status @restaurant.status
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
-  json.categories @restaurant.categories.uniq do |category|
+  json.categories @restaurant.main_categories do |category|
     json.name category.name
     json.id category.id
   end

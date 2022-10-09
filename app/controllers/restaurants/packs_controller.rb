@@ -64,7 +64,7 @@ module Restaurants
 
     def pack_params
       params.require(:pack).permit(:name, :price, :full_description, :short_description, :stock,
-                                   categories_attributes: [:name, :id, :_destroy])
+                                   category_ids: [])
     end
   end
 end

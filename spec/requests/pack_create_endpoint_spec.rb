@@ -4,6 +4,7 @@ RSpec.describe 'pack create endpoint', type: :request do
   scenario 'with correct params' do
     restaurant = create(:restaurant, address: 'Soul Buoy')
     restaurant_user = restaurant.restaurant_users.first
+    category = create(:category)
 
     auth_token = log_restaurant_user_in(restaurant_user)
 
@@ -14,7 +15,7 @@ RSpec.describe 'pack create endpoint', type: :request do
         stock: '10',
         full_description: 'description full',
         short_description: 'description short',
-        categories: { name: 'new category' }
+        categories: { id: category.id }
       }
     }, headers: { "HTTP_AUTHORIZATION": auth_token.to_s }
 
