@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  rescue_from CanCan::AccessDenied do |_exception|
+    render json: { message: 'No autorizado' }, status: 401
+  end
+
   include ::ActionController::Cookies
 
   before_action :configure_permitted_parameters, if: :devise_controller?
