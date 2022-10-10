@@ -30,7 +30,7 @@ class RestaurantUser < ApplicationRecord
   end
 
   def jwt_payload
-    super.merge(user_kind: role.capitalize)
+    super.merge(user_kind: role.capitalize, id: id, restaurant_id: restaurant.id, name: name)
   end
 
   private

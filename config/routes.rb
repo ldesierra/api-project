@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
   end
 
+  resources :jwt do
+    post :check_token, on: :collection
+  end
+
   resources :packs, only: [:show, :destroy]
 
   resources :categories, only: [:index]

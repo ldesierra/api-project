@@ -18,7 +18,7 @@ class Customer < ApplicationRecord
   before_restore :restore_if_unique_email, :restore_if_unique_username
 
   def jwt_payload
-    super.merge(user_kind: 'Customer')
+    super.merge(user_kind: 'Customer', id: id, username: username)
   end
 
   private

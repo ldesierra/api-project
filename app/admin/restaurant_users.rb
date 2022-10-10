@@ -17,7 +17,7 @@ ActiveAdmin.register RestaurantUser do
   end
 
   member_action :confirm_user, method: :post do
-    if resource.password.present?
+    if resource.encrypted_password.present?
       resource.confirm
       redirect_to admin_restaurant_users_path, notice: 'Confirmado'
     else
