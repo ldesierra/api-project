@@ -9,6 +9,7 @@ json.packs @packs do |pack|
     json.name category.name
     json.id category.id
   end
+  json.picture pack.pictures&.first&.image&.medium&.url
 end
 
 json.page @pagy.page
