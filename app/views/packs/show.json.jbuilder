@@ -12,6 +12,7 @@ json.pack do
   end
 
   json.pictures @pack.pictures do |picture|
-    json.picture picture.image&.medium&.url
+    json.id picture.id
+    json.image picture.image&.medium&.url
   end
 end
