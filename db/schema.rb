@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_16_001738) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,26 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "cart_packs", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "pack_id", null: false
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_packs_on_cart_id"
+    t.index ["pack_id"], name: "index_cart_packs_on_pack_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.bigint "restaurant_id"
+    t.float "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_carts_on_customer_id"
+    t.index ["restaurant_id"], name: "index_carts_on_restaurant_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -60,7 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.string "last_name"
     t.string "phone"
     t.string "username"
-    t.string "avatar"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -68,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.datetime "updated_at", null: false
     t.string "jti"
     t.datetime "deleted_at"
+    t.string "avatar"
     t.index ["deleted_at"], name: "index_customers_on_deleted_at"
     t.index ["email", "deleted_at"], name: "index_customers_on_email_and_deleted_at", unique: true
     t.index ["jti"], name: "index_customers_on_jti", unique: true
@@ -106,6 +126,26 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["imageable_type", "imageable_id"], name: "index_pictures_on_imageable"
+  end
+
+  create_table "purchase_packs", force: :cascade do |t|
+    t.bigint "pack_id", null: false
+    t.bigint "purchase_id", null: false
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pack_id"], name: "index_purchase_packs_on_pack_id"
+    t.index ["purchase_id"], name: "index_purchase_packs_on_purchase_id"
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "restaurant_id", null: false
+    t.float "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_purchases_on_customer_id"
+    t.index ["restaurant_id"], name: "index_purchases_on_restaurant_id"
   end
 
   create_table "restaurant_users", force: :cascade do |t|
@@ -153,18 +193,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "status", default: 0, null: false
-    t.string "address"
     t.string "logo"
     t.string "phone_number"
+    t.string "address"
     t.decimal "latitude"
     t.decimal "longitude"
     t.index ["deleted_at"], name: "index_restaurants_on_deleted_at"
-    t.index ["name", "deleted_at", "address"], name: "index_restaurants_on_name_and_deleted_at_and_address", unique: true
   end
 
+  add_foreign_key "cart_packs", "carts"
+  add_foreign_key "cart_packs", "packs"
+  add_foreign_key "carts", "customers"
+  add_foreign_key "carts", "restaurants"
   add_foreign_key "categories_packs", "categories"
   add_foreign_key "categories_packs", "packs"
   add_foreign_key "open_hours", "restaurants"
   add_foreign_key "packs", "restaurants"
+  add_foreign_key "purchase_packs", "packs"
+  add_foreign_key "purchase_packs", "purchases"
+  add_foreign_key "purchases", "customers"
+  add_foreign_key "purchases", "restaurants"
   add_foreign_key "restaurant_users", "restaurants"
 end

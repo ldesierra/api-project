@@ -26,11 +26,19 @@ Rails.application.routes.draw do
 
   resources :restaurants, only: [:new, :create, :index, :show, :update] do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
+    resources :purchases, only: [:index, :show], module: 'restaurants'
   end
 
   resources :jwt do
     post :check_token, on: :collection
   end
+
+  resources :carts, only: [:show] do
+    put :add, on: :collection
+    get :show, on: :collection
+  end
+
+  resources :purchases, only: [:create, :index, :show]
 
   resources :packs, only: [:show, :destroy]
 
