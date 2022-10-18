@@ -13,17 +13,22 @@ class Cart < ApplicationRecord
     cart_packs.each(&:destroy!)
   end
 
-  def cart_pack_changed
-    calculate_total
+  def cart_pack_removed(cart_pack)
+    cart_packs.delete(cart_pack)
+    cart_pack_quantity_changed
   end
 
-  private
+  def cart_pack_quantity_changed
+    cart_packs.each(&:reload)
 
-  def calculate_total
-    self.total = cart_packs.reduce(0) do |total, cart_pack|
-      total + cart_pack.quantity * cart_pack.pack.price
-    end
+    self.total = if cart_packs.empty?
+                   0
+                 else
+                   cart_packs.reduce(0) do |total, cart_pack|
+                     total + cart_pack.quantity * cart_pack.pack.price
+                   end
+                 end
 
-    save!
+    save
   end
 end

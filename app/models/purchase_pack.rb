@@ -4,7 +4,7 @@ class PurchasePack < ApplicationRecord
 
   validates_presence_of :quantity
 
-  before_save :calculate_purchase_total
+  after_save :calculate_purchase_total
 
   private
 

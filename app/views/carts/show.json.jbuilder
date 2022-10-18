@@ -1,6 +1,7 @@
 json.cart do
   json.id @cart.id
   json.customer_id @cart.customer_id
+  json.restaurant_id @cart.restaurant_id
   json.total @cart.total
   json.packs @cart.cart_packs do |cart_pack|
     json.id cart_pack.id

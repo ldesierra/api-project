@@ -34,20 +34,54 @@ class CartsController < ApplicationController
       add_new_pack(pack, quantity)
     end
 
-    render json: { message: 'Pack agregado correctamente' }, status: 200
+    if @error.present?
+      render json: { message: @error }, status: 422
+    else
+      render json: { message: 'Pack agregado correctamente' }, status: 200
+    end
+  end
+
+  def remove
+    pack = Pack.find(params[:pack_id])
+
+    user_cart
+
+    if @cart.pack?(pack)
+      remove_from_cart(pack)
+      render json: { message: 'Pack borrado correctamente del carro' }, status: 200
+    else
+      render json: { message: 'Pack no pertenece al carro' }, status: 404
+    end
   end
 
   private
 
+  def remove_from_cart(pack)
+    cart_pack = @cart.cart_packs.where(pack_id: pack.id).first
+    cart_pack.destroy!
+    @cart.cart_packs.delete(cart_pack)
+  end
+
   def add_units_to_pack(pack, quantity)
     cart_pack = @cart.cart_packs.where(pack_id: pack.id).first
-    cart_pack.quantity = cart_pack.quantity + quantity
-    cart_pack.save!
+    new_quantity = cart_pack.quantity + quantity
+
+    if new_quantity > cart_pack.stock
+      @error = 'No hay stock'
+    else
+      cart_pack.quantity = new_quantity
+      cart_pack.save!
+    end
   end
 
   def add_new_pack(pack, quantity)
-    cart_pack = CartPack.create(pack_id: pack.id, quantity: quantity, cart_id: @cart.id)
-    @cart.cart_packs << cart_pack
+    if quantity > pack.stock
+      @error = 'No hay stock'
+    else
+      cart_pack = CartPack.create(pack_id: pack.id, quantity: quantity, cart_id: @cart.id)
+
+      @cart.cart_packs << cart_pack
+    end
   end
 
   def user_cart
@@ -59,7 +93,12 @@ class CartsController < ApplicationController
               Cart.find(session_cart_id)
             else
               cart = Cart.create
-              session[:cart_id] = cart.id
+
+              if current_customer.present?
+                cart.customer_id = current_customer.id
+              else
+                session[:cart_id] = cart.id
+              end
 
               cart
             end

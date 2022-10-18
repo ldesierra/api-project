@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   resources :carts, only: [:show] do
     put :add, on: :collection
+    put :remove, on: :collection
     get :show, on: :collection
   end
 
