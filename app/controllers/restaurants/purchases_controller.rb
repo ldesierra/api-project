@@ -21,6 +21,14 @@ module Restaurants
       end
     end
 
-    def show; end
+    def delivered
+      @purchase.status = 'delivered'
+
+      if @purchase.save
+        render json: { message: 'Pedido marcado como entregado' }, status: 200
+      else
+        render json: { message: 'Error al marcar pedido como entregado' }, status: 422
+      end
+    end
   end
 end

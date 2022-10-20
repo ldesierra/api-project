@@ -26,7 +26,9 @@ Rails.application.routes.draw do
 
   resources :restaurants, only: [:new, :create, :index, :show, :update] do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
-    resources :purchases, only: [:index, :show], module: 'restaurants'
+    resources :purchases, only: [:index], module: 'restaurants' do
+      put :delivered, on: :member
+    end
   end
 
   resources :jwt do

@@ -10,9 +10,7 @@ class Purchase < ApplicationRecord
 
   belongs_to :customer
 
-  def purchase_pack_changed
-    calculate_total
-  end
+  after_create :calculate_total
 
   private
 

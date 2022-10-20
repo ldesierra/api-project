@@ -1,6 +1,9 @@
 json.purchases @purchases do |purchase|
   json.id purchase.id
   json.customer_id purchase.customer_id
+  json.status purchase.status
+  json.qualification purchase.qualification
+  json.code purchase.code
   json.purchase_packs purchase.purchase_packs do |purchase_pack|
     json.pack_id purchase_pack.pack_id
     json.quantity purchase_pack.quantity
