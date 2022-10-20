@@ -18,6 +18,8 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
       pack_id: pack.id
     }, as: :json
 
+    sleep(1)
+
     get '/carts', params: {
       restaurant_id: restaurant.id
     }, as: :json
@@ -48,6 +50,8 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
       put '/carts/remove', params: {
         pack_id: pack.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
+
+      sleep(1)
 
       get '/carts', params: {
         restaurant_id: restaurant.id
