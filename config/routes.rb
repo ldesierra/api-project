@@ -41,7 +41,12 @@ Rails.application.routes.draw do
     get :show, on: :collection
   end
 
-  resources :purchases, only: [:create, :index, :show]
+  resources :purchases, only: [:create, :index, :show] do
+    get :payment_link, on: :collection
+  end
+
+  get 'payments/success', to: 'payments#success'
+  get 'payments/failure', to: 'payments#failure'
 
   resources :packs, only: [:show, :destroy]
 

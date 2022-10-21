@@ -1,31 +1,30 @@
 class Purchase < ApplicationRecord
+  belongs_to :customer
+  belongs_to :restaurant
   has_many :purchase_packs, dependent: :destroy
   has_many :packs, through: :purchase_packs
-  accepts_nested_attributes_for :purchase_packs, allow_destroy: true
 
   validates_presence_of :status
   validates_format_of :code, with: /\A\w{6}\z/, allow_blank: true
-  validate :packs_from_restaurant, on: :create
-  validate :packs_from_restaurant, on: :update
+  validate :packs_from_restaurant, on: :create, if: -> { packs.present? }
+  validate :packs_from_restaurant, on: :update, if: -> { packs.present? }
   validate :packs_uniqueness, on: :create
   validate :packs_uniqueness, on: :update
   validate :unchanged_customer_and_restaurant, on: :update
   validate :available_quantities, on: :create
 
-  before_create :add_code
   after_create :update_pack_stock
+  after_create :calculate_total
+  before_create :add_code
 
   enum status: { waiting_for_payment: 0, completed: 1, delivered: 2 }
-
-  belongs_to :customer
-  belongs_to :restaurant
-
-  after_create :calculate_total
+  accepts_nested_attributes_for :purchase_packs, allow_destroy: true
 
   private
 
   def packs_from_restaurant
     rts = purchase_packs.map(&:pack).map(&:restaurant)
+
     return true unless rts.exclude?(restaurant) || rts.detect { |rt| rts.count(rt) < rts.length }
 
     errors.add(:purchase, 'Los packs añadidos deben corresponder al resturante seleccionado')

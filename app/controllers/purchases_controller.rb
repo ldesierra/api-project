@@ -22,12 +22,47 @@ class PurchasesController < ApplicationController
   def show; end
 
   def create
-    cart = Cart.find(params[:cart_id])
+    cart = Cart.find(cart_params[:cart_id])
 
     render json: { message: 'Necesita loguearse' }, status: 401 unless cart.customer.present?
 
     purchase = Purchase.create(customer: cart.customer, restaurant: cart.restaurant)
 
+    unless purchase.valid? && cart.cart_packs.any?
+      return render json: { error: 'Compra invalida' },
+                    status: 500
+    end
+
+    load_purchase_products_to_purchase(cart, purchase)
+    clean_cart(cart)
+
+    if purchase.valid? && cart.cart_packs.empty?
+      render json: { purchase_id: purchase.id }, status: 200
+    else
+      render json: { error: 'No se pudo crear la compra' }, status: 500
+    end
+  end
+
+  def payment_link
+    purchase = Purchase.find(params[:purchase_id])
+
+    if purchase.blank? && !purchase.waiting_for_payment?
+      return render json: { error: 'Compra invalida' }, status: 500
+    end
+
+    result = PaymentLink.call(purchase: purchase)
+
+    if result.success?
+      render json: { payment_link: result.payment_link }, status: 200
+    else
+      render json: { error: result.error }, status: 500
+    end
+  end
+
+  private
+
+  def load_purchase_products_to_purchase(cart, purchase)
+    purchase.save
     cart.cart_packs.each do |cart_pack|
       purchase.purchase_packs << PurchasePack.create(
         pack_id: cart_pack.pack_id,
@@ -35,11 +70,7 @@ class PurchasesController < ApplicationController
         quantity: cart_pack.quantity
       )
     end
-
-    clean_cart(cart)
   end
-
-  private
 
   def clean_cart(cart)
     cart.clean_cart_packs
@@ -49,7 +80,7 @@ class PurchasesController < ApplicationController
     cart.save
   end
 
-  def purchase_params
+  def cart_params
     params.permit(:cart_id)
   end
 end
