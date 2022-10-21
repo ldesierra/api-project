@@ -10,4 +10,8 @@ class Pack < ApplicationRecord
 
   validates_presence_of :name, :stock, :price, :full_description, :short_description
   accepts_nested_attributes_for :categories, :pictures, allow_destroy: true
+
+  def pack_and_restaurant_names
+    "#{name} | #{restaurant.name}"
+  end
 end
