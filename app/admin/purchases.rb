@@ -1,4 +1,6 @@
 ActiveAdmin.register Purchase do
+  actions :all, except: [:edit]
+
   permit_params :status, :qualification, :code, :total, :customer_id, :restaurant_id,
                 purchase_packs_attributes: [:id, :quantity, :purchase_id, :pack_id, :_destroy]
 
@@ -31,13 +33,9 @@ ActiveAdmin.register Purchase do
       row :restaurant
 
       panel 'Packs' do
-        table_for purchase.packs do
-          column :name
-          column :stock
-          column :full_description
-          column :short_description
-          column :price
-          column :categories
+        table_for purchase.purchase_packs do
+          column :pack
+          column :quantity
         end
       end
     end
@@ -54,7 +52,9 @@ ActiveAdmin.register Purchase do
                  remove_record: 'Quitar',
                  allow_destroy: true do |c|
         c.input :pack, as: :select,
-                       collection: Pack.all.map { |pack| [pack.pack_and_restaurant_names, pack.id] }
+                       collection: Pack.all.map { |pack|
+                         [pack.select_string_for_purchase, pack.id]
+                       }
         c.input :quantity
       end
     end

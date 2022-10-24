@@ -10,8 +10,10 @@ class Purchase < ApplicationRecord
   validate :packs_uniqueness, on: :create
   validate :packs_uniqueness, on: :update
   validate :unchanged_customer_and_restaurant, on: :update
+  validate :available_quantities, on: :create
 
   before_create :add_code
+  after_create :update_pack_stock
 
   enum status: { waiting_for_payment: 0, completed: 1, delivered: 2 }
 
@@ -44,8 +46,21 @@ class Purchase < ApplicationRecord
     end
   end
 
+  def available_quantities
+    return true unless purchase_packs.detect { |pp| pp.quantity > pp.pack.stock }
+
+    errors.add(:purchase, 'La cantidad de los packs no debe superar el stock disponible')
+  end
+
   def add_code
     self.code = Random.hex.first(6)
+  end
+
+  def update_pack_stock
+    purchase_packs.each do |purchase_pack|
+      purchase_pack.stock = purchase_pack.stock - purchase_pack.quantity
+      purchase_pack.pack.save
+    end
   end
 
   def calculate_total

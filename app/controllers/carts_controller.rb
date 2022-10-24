@@ -15,7 +15,7 @@ class CartsController < ApplicationController
 
     cart_restaurant = @cart.restaurant
 
-    @cart.clean_cart_packs if cart_restaurant.present? && cart_restaurant.id != restaurant_id
+    @cart.clean_cart_packs if cart_restaurant.present? && cart_restaurant.id != restaurant_id.to_i
 
     @cart.restaurant = Restaurant.find(restaurant_id)
 
@@ -37,7 +37,7 @@ class CartsController < ApplicationController
     if @error.present?
       render json: { message: @error }, status: 422
     else
-      render json: { message: 'Pack agregado correctamente' }, status: 200
+      render json: { message: 'Pack agregado correctamente', cart: @cart }, status: 200
     end
   end
 
@@ -64,9 +64,9 @@ class CartsController < ApplicationController
 
   def add_units_to_pack(pack, quantity)
     cart_pack = @cart.cart_packs.where(pack_id: pack.id).first
-    new_quantity = cart_pack.quantity + quantity
+    new_quantity = cart_pack.quantity + quantity.to_i
 
-    if new_quantity > cart_pack.stock
+    if new_quantity.to_i > cart_pack.stock
       @error = 'No hay stock'
     else
       cart_pack.quantity = new_quantity
@@ -75,21 +75,22 @@ class CartsController < ApplicationController
   end
 
   def add_new_pack(pack, quantity)
-    if quantity > pack.stock
+    if quantity.to_i > pack.stock
       @error = 'No hay stock'
     else
       cart_pack = CartPack.create(pack_id: pack.id, quantity: quantity, cart_id: @cart.id)
-
       @cart.cart_packs << cart_pack
     end
   end
+
+  # rubocop:disable Metrics/AbcSize
 
   def user_cart
     session_cart_id = session[:cart_id]
 
     @cart = if current_customer.present? && current_customer.cart.present?
               current_customer.cart
-            elsif session_cart_id.present?
+            elsif session_cart_id.present? && Cart.find(session_cart_id).present?
               Cart.find(session_cart_id)
             else
               cart = Cart.create
@@ -103,4 +104,6 @@ class CartsController < ApplicationController
               cart
             end
   end
+
+  # rubocop:enable Metrics/AbcSize
 end

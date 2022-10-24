@@ -18,20 +18,17 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
       pack_id: pack.id
     }, as: :json
 
-    sleep(1)
-
     get '/carts', params: {
       restaurant_id: restaurant.id
     }, as: :json
 
     json = JSON.parse(response.body).deep_symbolize_keys
 
-    expect(json[:cart][:total]).to eq(0)
     expect(json[:cart][:packs]).to eq([])
   end
 
   context 'as logged customer' do
-    it 'adds packs successfully and changes quantity if requested again' do
+    it 'removes pack successfully' do
       restaurant = create(:restaurant)
       pack = create(:pack, restaurant: restaurant)
       customer = create(:customer)
@@ -51,15 +48,13 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
         pack_id: pack.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 
-      sleep(1)
-
       get '/carts', params: {
         restaurant_id: restaurant.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 
       json = JSON.parse(response.body).deep_symbolize_keys
 
-      expect(json[:cart][:total]).to eq(0)
+      expect(json[:cart][:packs]).to eq([])
     end
   end
 end
