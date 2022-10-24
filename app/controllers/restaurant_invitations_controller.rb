@@ -72,6 +72,7 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   def restaurant_params
     params.require(:restaurant).permit(:name, :description, :logo, :phone_number, :address,
-                                       open_hours_attributes: [:start_time, :end_time, :day])
+                                       open_hours_attributes: [:start_time, :end_time,
+                                                               :day, :id, :_destroy])
   end
 end

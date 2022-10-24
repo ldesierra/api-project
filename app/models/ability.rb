@@ -4,7 +4,9 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    can :read, Category
     can :create, Restaurant
+    can :read, Pack
     can :read, Restaurant, status: :active
 
     return if user.blank?
@@ -16,13 +18,26 @@ class Ability
     elsif user.employee?
       employee_abilities
     else
-      manager_abilities
+      manager_abilities(user)
     end
   end
 
-  def manager_abilities; end
+  def manager_abilities(user)
+    can :create, Pack
+    can [:destroy, :update], Pack do |pack|
+      pack.restaurant.restaurant_users.include?(user)
+    end
+    can :update, Restaurant do |restaurant|
+      restaurant.restaurant_users.include?(user)
+    end
+  end
 
-  def employee_abilities; end
+  def employee_abilities
+    can :create, Pack
+    can [:destroy, :update], Pack do |pack|
+      pack.restaurant.restaurant_users.include?(user)
+    end
+  end
 
   def customer_abilities; end
 

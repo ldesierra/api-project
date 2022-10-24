@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'categories/index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -23,7 +24,17 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
-  resources :restaurants, only: [:new, :create, :index, :show]
+  resources :restaurants, only: [:new, :create, :index, :show, :update] do
+    resources :packs, only: [:index, :update, :create], module: 'restaurants'
+  end
+
+  resources :jwt do
+    post :check_token, on: :collection
+  end
+
+  resources :packs, only: [:show, :destroy]
+
+  resources :categories, only: [:index]
 
   root to: 'home#index'
 end

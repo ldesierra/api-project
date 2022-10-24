@@ -29,11 +29,19 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  def update
+    if @restaurant.update(update_params)
+      render json: { message: 'Restaurante actualizado correctamente' }, status: :ok
+    else
+      render json: { message: 'Error al actualizar restaurante' }, status: :unprocessable_entity
+    end
+  end
+
   def create
-    @restaurant = Restaurant.new(restaurant_params)
+    @restaurant = Restaurant.new(create_params)
 
     if @restaurant.save
-      render json: { message: 'Restaurant solicited correctly' }, status: :ok
+      render json: { message: 'Restaurante solicitado correctamente' }, status: :ok
     else
       render json: { message: @restaurant.errors.full_messages, restaurant: @restaurant },
              status: :unprocessable_entity
@@ -52,7 +60,14 @@ class RestaurantsController < ApplicationController
     [page, items, clients_latitude, clients_longitude]
   end
 
-  def restaurant_params
+  def update_params
+    params.require(:restaurant).permit(:name, :phone_number, :latitude, :longitude, :address,
+                                       :description, :logo,
+                                       open_hours_attributes: [:day, :start_time, :end_time,
+                                                               :id, :_destroy])
+  end
+
+  def create_params
     params.require(:restaurant).permit(:name, :phone_number, :latitude, :longitude, :address,
                                        restaurant_users_attributes: [:name, :email, :phone_number])
   end

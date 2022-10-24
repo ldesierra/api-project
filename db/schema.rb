@@ -153,12 +153,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_25_172948) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.integer "status", default: 0, null: false
+    t.string "address"
     t.string "logo"
     t.string "phone_number"
-    t.string "address"
     t.decimal "latitude"
     t.decimal "longitude"
     t.index ["deleted_at"], name: "index_restaurants_on_deleted_at"
+    t.index ["name", "deleted_at", "address"], name: "index_restaurants_on_name_and_deleted_at_and_address", unique: true
   end
 
   add_foreign_key "categories_packs", "categories"

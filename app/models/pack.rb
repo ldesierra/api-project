@@ -9,6 +9,5 @@ class Pack < ApplicationRecord
   validates :stock, comparison: { greater_than_or_equal_to: 0 }
 
   validates_presence_of :name, :stock, :price, :full_description, :short_description
-  accepts_nested_attributes_for :categories, allow_destroy: true
-  accepts_nested_attributes_for :pictures, allow_destroy: true
+  accepts_nested_attributes_for :categories, :pictures, allow_destroy: true
 end

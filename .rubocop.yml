@@ -19,6 +19,7 @@ Metrics/BlockLength:
   CountComments: false # count full line comments?
   Max: 25
   Exclude:
+    - app/views/**/*
     - config/**/*
     - spec/**/*
     - app/admin/*

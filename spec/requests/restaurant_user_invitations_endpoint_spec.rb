@@ -20,7 +20,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
 
     # expect(response.status).to eq(200)
     json = JSON.parse(response.body).deep_symbolize_keys
-    expect(json[:message]).to eq('Restaurant solicited correctly')
+    expect(json[:message]).to eq('Restaurante solicitado correctamente')
 
     restaurant = Restaurant.first
     restaurant_user = RestaurantUser.first
@@ -83,7 +83,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
 
     expect(response.status).to eq(200)
     json = JSON.parse(response.body).deep_symbolize_keys
-    expect(json[:message]).to eq('Restaurant solicited correctly')
+    expect(json[:message]).to eq('Restaurante solicitado correctamente')
 
     restaurant = Restaurant.first
     restaurant_user = RestaurantUser.first
@@ -138,7 +138,7 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
 
     expect(response.status).to eq(200)
     json = JSON.parse(response.body).deep_symbolize_keys
-    expect(json[:message]).to eq('Restaurant solicited correctly')
+    expect(json[:message]).to eq('Restaurante solicitado correctamente')
 
     restaurant = Restaurant.first
     restaurant_user = RestaurantUser.first
