@@ -11,11 +11,13 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
 
     put '/carts/add', params: {
       quantity: 3,
-      pack_id: pack.id
+      pack_id: pack.id,
+      restaurant_id: restaurant.id
     }, as: :json
 
     put '/carts/remove', params: {
-      pack_id: pack.id
+      pack_id: pack.id,
+      restaurant_id: restaurant.id
     }, as: :json
 
     get '/carts', params: {
@@ -41,10 +43,12 @@ RSpec.describe 'cart remove pack endpoint', type: :request do
 
       put '/carts/add', params: {
         quantity: 3,
+        restaurant_id: restaurant.id,
         pack_id: pack.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 
       put '/carts/remove', params: {
+        restaurant_id: restaurant.id,
         pack_id: pack.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 

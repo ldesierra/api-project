@@ -8,7 +8,7 @@ class CartsController < ApplicationController
   def show
     restaurant_id = params[:restaurant_id]
 
-    return render json: { message: 'cart no encontrado' }, status: 404 unless
+    return render json: { message: 'No puede haber cart sin restaurante' }, status: 404 unless
       restaurant_id.present?
 
     user_cart
@@ -23,6 +23,11 @@ class CartsController < ApplicationController
   end
 
   def add
+    restaurant_id = params[:restaurant_id]
+
+    return render json: { message: 'No puede haber cart sin restaurante' }, status: 404 unless
+      restaurant_id.present?
+
     pack = Pack.find(params[:pack_id])
     quantity = params[:quantity]
 
@@ -42,6 +47,11 @@ class CartsController < ApplicationController
   end
 
   def remove
+    restaurant_id = params[:restaurant_id]
+
+    return render json: { message: 'No puede haber cart sin restaurante' }, status: 404 unless
+      restaurant_id.present?
+
     pack = Pack.find(params[:pack_id])
 
     user_cart

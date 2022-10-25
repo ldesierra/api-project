@@ -11,6 +11,12 @@ module Restaurants
     load_and_authorize_resource
 
     def index
+      restaurant_id = params[:restaurant_id]
+
+      if current_restaurant_user.restaurant_id != restaurant_id.to_i
+        render json: { message: 'No tiene acceso a este restaurante' }, status: 401
+      end
+
       page = params[:page] || Pagy::DEFAULT[:page]
       items = params[:items] || Pagy::DEFAULT[:items]
 

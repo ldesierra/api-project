@@ -16,6 +16,7 @@ RSpec.describe 'cart add pack endpoint', type: :request do
 
     put '/carts/add', params: {
       quantity: pack.stock,
+      restaurant_id: restaurant.id,
       pack_id: pack.id
     }, as: :json
 
@@ -51,7 +52,8 @@ RSpec.describe 'cart add pack endpoint', type: :request do
 
       put '/carts/add', params: {
         quantity: pack.stock - 1,
-        pack_id: pack.id
+        pack_id: pack.id,
+        restaurant_id: restaurant.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 
       json = JSON.parse(response.body).deep_symbolize_keys
@@ -68,6 +70,7 @@ RSpec.describe 'cart add pack endpoint', type: :request do
 
       put '/carts/add', params: {
         quantity: 1,
+        restaurant_id: restaurant.id,
         pack_id: pack.id
       }, headers: { "HTTP_AUTHORIZATION": auth.to_s }, as: :json
 
@@ -98,7 +101,8 @@ RSpec.describe 'cart add pack endpoint', type: :request do
 
       put '/carts/add', params: {
         quantity: pack.stock + 1,
-        pack_id: pack.id
+        pack_id: pack.id,
+        restaurant_id: restaurant.id
       }, as: :json
 
       json = JSON.parse(response.body).deep_symbolize_keys
