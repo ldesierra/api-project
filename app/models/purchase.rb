@@ -58,7 +58,7 @@ class Purchase < ApplicationRecord
 
   def update_pack_stock
     purchase_packs.each do |purchase_pack|
-      purchase_pack.stock = purchase_pack.stock - purchase_pack.quantity
+      purchase_pack.pack.stock -= purchase_pack.quantity
       purchase_pack.pack.save
     end
   end
