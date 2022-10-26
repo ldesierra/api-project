@@ -51,6 +51,8 @@ gem 'pagy', '~> 5.10'
 
 gem 'geocoder'
 
+gem 'mercadopago-sdk', '2.0.2'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

@@ -6,4 +6,5 @@ class PurchasePack < ApplicationRecord
   validates :quantity, comparison: { greater_than: 0 }
 
   delegate :stock, to: :pack
+  delegate :name, to: :pack, prefix: :pack
 end

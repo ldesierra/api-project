@@ -4,7 +4,7 @@ RSpec.describe 'restaurant user soft deletes packs', type: :request do
   scenario 'non authorized user' do
     pack = create(:pack)
     restaurant = create(:restaurant)
-    restaurant_user = restaurant.restaurant_user.first
+    restaurant_user = restaurant.restaurant_users.first
 
     restaurant_user.confirm
     post '/restaurant_users/login', params: {
