@@ -15,5 +15,5 @@ json.restaurants @restaurants do |restaurant|
   end
 end
 
-json.page @pagy.page
-json.total_pages @pagy.pages
+json.page @pagy&.page
+json.total_pages @pagy&.pages

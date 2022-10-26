@@ -9,6 +9,8 @@ class PurchasesController < ApplicationController
   after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
+    return render json: { message: 'No autorizado' }, status: 401 unless current_customer.present?
+
     page = params[:page].presence || Pagy::DEFAULT[:page]
     items = params[:items].presence || Pagy::DEFAULT[:items]
 
@@ -19,7 +21,9 @@ class PurchasesController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    return render json: { message: 'No autorizado' }, status: 401 unless current_customer.present?
+  end
 
   def create
     cart = Cart.find(cart_params[:cart_id])

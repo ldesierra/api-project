@@ -52,7 +52,11 @@ class Purchase < ApplicationRecord
   end
 
   def add_code
-    self.code = Random.hex.first(6)
+    code = Random.hex.first(6)
+
+    code = Random.hex.first(6) while Purchase.find_by(code: code).present?
+
+    self.code = code
   end
 
   def update_pack_stock

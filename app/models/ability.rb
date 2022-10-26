@@ -32,6 +32,7 @@ class Ability
   def manager_abilities(user)
     can :create, Pack
     can [:read, :delivered], Purchase, restaurant_id: user.restaurant_id
+    can [:read], RestaurantUser, restaurant_id: user.restaurant_id
     can [:destroy, :update], Pack do |pack|
       pack.restaurant.restaurant_users.include?(user)
     end
@@ -42,6 +43,7 @@ class Ability
 
   def employee_abilities
     can :create, Pack
+    can [:read], RestaurantUser, restaurant_id: user.restaurant_id
     can [:read, :delivered], Purchase, restaurant_id: user.restaurant_id
     can [:destroy, :update], Pack do |pack|
       pack.restaurant.restaurant_users.include?(user)

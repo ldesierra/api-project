@@ -6,6 +6,11 @@ json.cart do
   json.packs @cart.cart_packs do |cart_pack|
     json.id cart_pack.id
     json.quantity cart_pack.quantity
-    json.pack_id cart_pack.pack.id
+    json.pack do
+      json.id cart_pack.pack.id
+      json.price cart_pack.pack.price
+      json.name cart_pack.pack.name
+      json.image cart_pack.pack.pictures&.first&.image&.medium&.url
+    end
   end
 end

@@ -34,7 +34,7 @@ RSpec.describe 'cart add pack endpoint', type: :request do
     json = JSON.parse(response.body).deep_symbolize_keys
 
     expect(json[:cart][:total]).to eq(pack.price * pack.stock)
-    expect(json[:cart][:packs][0][:pack_id]).to eq(pack.id)
+    expect(json[:cart][:packs][0][:pack][:id]).to eq(pack.id)
     expect(json[:cart][:packs][0][:quantity]).to eq(pack.stock)
   end
 
@@ -66,7 +66,7 @@ RSpec.describe 'cart add pack endpoint', type: :request do
 
       json = JSON.parse(response.body).deep_symbolize_keys
 
-      expect(json[:cart][:packs][0][:pack_id]).to eq(pack.id)
+      expect(json[:cart][:packs][0][:pack][:id]).to eq(pack.id)
 
       put '/carts/add', params: {
         quantity: 1,

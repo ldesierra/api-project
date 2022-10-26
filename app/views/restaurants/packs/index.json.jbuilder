@@ -12,5 +12,5 @@ json.packs @packs do |pack|
   json.picture pack.pictures&.first&.image&.medium&.url
 end
 
-json.page @pagy.page
-json.total_pages @pagy.pages
+json.page @pagy&.page
+json.total_pages @pagy&.pages

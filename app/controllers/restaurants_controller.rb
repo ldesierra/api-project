@@ -18,10 +18,14 @@ class RestaurantsController < ApplicationController
 
     @restaurants = @restaurants.near([clients_latitude, clients_longitude], 10_000)
 
-    begin
-      @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
-    rescue Pagy::OverflowError
-      @restaurants = @pagy
+    @restaurants = filter_restaurant(@restaurants)
+
+    if @restaurants.present?
+      begin
+        @pagy, @restaurants = pagy(@restaurants, page: page, items: items)
+      rescue Pagy::OverflowError
+        @restaurants = @pagy
+      end
     end
 
     respond_to do |format|
@@ -49,6 +53,16 @@ class RestaurantsController < ApplicationController
   end
 
   private
+
+  def filter_restaurant(restaurants)
+    return restaurants unless params[:category].present?
+
+    restaurant_ids = restaurants.filter do |restaurant|
+      restaurant.main_categories.pluck(:name).include?(params[:category])
+    end
+
+    Restaurant.where(id: restaurant_ids)
+  end
 
   def params_for_index_action
     items = params[:items].presence || Pagy::DEFAULT[:items]

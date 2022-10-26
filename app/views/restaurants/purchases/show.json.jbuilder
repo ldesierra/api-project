@@ -5,7 +5,6 @@ json.purchase do
   json.restaurant_id @purchase.restaurant_id
   json.status @purchase.status
   json.qualification @purchase.qualification
-  json.code @purchase.code
   json.purchase_packs @purchase.purchase_packs do |purchase_pack|
     json.id purchase_pack.id
     json.quantity purchase_pack.quantity

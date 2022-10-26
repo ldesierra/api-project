@@ -6,7 +6,7 @@ class Cart < ApplicationRecord
   has_many :packs, through: :cart_packs
 
   def pack?(pack)
-    cart_packs.any? { |cart_pack| cart_pack.pack = pack }
+    cart_packs.any? { |cart_pack| cart_pack.pack == pack }
   end
 
   def clean_cart_packs
