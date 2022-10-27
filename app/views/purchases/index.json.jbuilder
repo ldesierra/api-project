@@ -1,5 +1,6 @@
 json.purchases @purchases do |purchase|
   json.id purchase.id
+  json.total purchase.total
   json.customer_id purchase.customer_id
   json.restaurant_id purchase.restaurant_id
   json.status purchase.status

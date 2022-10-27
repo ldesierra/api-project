@@ -1,7 +1,10 @@
 json.purchases @purchases do |purchase|
   json.id purchase.id
   json.customer_id purchase.customer_id
+  json.customer_first_name purchase.customer.first_name
+  json.customer_last_name purchase.customer.last_name
   json.status purchase.status
+  json.total purchase.total
   json.restaurant_id purchase.restaurant_id
   json.qualification purchase.qualification
   json.purchase_packs purchase.purchase_packs do |purchase_pack|

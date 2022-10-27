@@ -53,7 +53,10 @@ module Restaurants
     private
 
     def filter_purchases(purchases)
-      purchases = purchases.where('CAST(id AS TEXT) LIKE ?', params[:id]) if params[:id].present?
+      if params[:id].present?
+        purchases = purchases.where('CAST(id AS TEXT) LIKE ?',
+                                    "%#{params[:id]}%")
+      end
 
       purchases = purchases.where(status: params[:status]) if params[:status].present?
 

@@ -14,6 +14,10 @@ class PurchasesController < ApplicationController
     page = params[:page].presence || Pagy::DEFAULT[:page]
     items = params[:items].presence || Pagy::DEFAULT[:items]
 
+    @purchases = filter_purchases(@purchases)
+
+    return unless @purchases.present?
+
     begin
       @pagy, @purchases = pagy(@purchases, page: page, items: items)
     rescue Pagy::OverflowError
@@ -64,6 +68,17 @@ class PurchasesController < ApplicationController
   end
 
   private
+
+  def filter_purchases(purchases)
+    if params[:id].present?
+      purchases = purchases.where('CAST(id AS TEXT) LIKE ?',
+                                  "%#{params[:id]}%")
+    end
+
+    purchases = purchases.where(status: params[:status]) if params[:status].present?
+
+    purchases
+  end
 
   def load_purchase_products_to_purchase(cart, purchase)
     purchase.save
