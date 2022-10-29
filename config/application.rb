@@ -17,7 +17,8 @@ module NoLoTiresBack
     end
 
     config.middleware.use ActionDispatch::Flash
-    config.session_store :cookie_store, key: 'nolotiresSession', httponly: false
+    config.session_store :cookie_store, key: 'nolotiresSession', httponly: false, same_site: :none, secure: true
+    config.action_dispatch.cookies_same_site_protection = :none
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
   end
