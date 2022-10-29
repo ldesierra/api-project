@@ -64,6 +64,29 @@ RSpec.describe 'restaurant_user invitations endpoints', type: :request do
     expect(restaurant.active?).to eq(true)
   end
 
+  scenario 'with correct token sent back but no name' do
+    post '/restaurants', params: {
+      restaurant: {
+        name: '',
+        phone_number: '+59899999999',
+        latitude: 0,
+        longitude: 0,
+        restaurant_users_attributes: {
+          '0': {
+            email: 'test@email.com',
+            phone_number: '+59899999999',
+            name: 'Name'
+          }
+        }
+      }
+    }
+
+    expect(response.status).to eq(422)
+
+    json = JSON.parse(response.body).deep_symbolize_keys
+    expect(json[:message]).to eq(['Name no puede estar en blanco'])
+  end
+
   scenario 'with incorrect token sent back' do
     post '/restaurants', params: {
       restaurant: {
