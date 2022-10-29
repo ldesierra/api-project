@@ -40,6 +40,10 @@ module Restaurants
     end
 
     def delivered
+      unless params[:code] == @purchase.code
+        return render json: { message: 'Debe tener el codigo para marcar entregado' }, status: 401
+      end
+
       @purchase.status = 'delivered'
 
       if @purchase.save
