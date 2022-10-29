@@ -5,6 +5,8 @@ class Cart < ApplicationRecord
   has_many :cart_packs
   has_many :packs, through: :cart_packs
 
+  accepts_nested_attributes_for :cart_packs, allow_destroy: true
+
   def pack?(pack)
     cart_packs.any? { |cart_pack| cart_pack.pack == pack }
   end

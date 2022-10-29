@@ -34,21 +34,27 @@ class PurchasesController < ApplicationController
 
     render json: { message: 'Necesita loguearse' }, status: 401 unless cart.customer.present?
 
-    purchase = Purchase.create(customer: cart.customer, restaurant: cart.restaurant)
+    if not_enough_stock_for_purchase(cart)
+      return render json: { message: 'No hay suficiente stock' }, status: 422
+    end
+
+    purchase = Purchase.new(customer: cart.customer, restaurant: cart.restaurant)
 
     unless purchase.valid? && cart.cart_packs.any?
       return render json: { error: 'Compra invalida' },
                     status: 500
     end
 
-    load_purchase_products_to_purchase(cart, purchase)
-    clean_cart(cart)
+    purchase.save!
 
-    if purchase.valid? && cart.cart_packs.empty?
-      render json: { purchase_id: purchase.id }, status: 200
-    else
-      render json: { error: 'No se pudo crear la compra' }, status: 500
+    begin
+      load_purchase_products_to_purchase(cart, purchase)
+      clean_cart(cart)
+    rescue StandardError
+      return render json: { message: 'Error al crear el pedido' }, status: 401
     end
+
+    render json: { purchase_id: purchase.id }, status: 200
   end
 
   def payment_link
@@ -69,6 +75,14 @@ class PurchasesController < ApplicationController
 
   private
 
+  def not_enough_stock_for_purchase(cart)
+    cart.cart_packs.each do |cart_pack|
+      return true if cart_pack.quantity > cart_pack.stock
+    end
+
+    false
+  end
+
   def filter_purchases(purchases)
     if params[:id].present?
       purchases = purchases.where('CAST(id AS TEXT) LIKE ?',
@@ -81,7 +95,6 @@ class PurchasesController < ApplicationController
   end
 
   def load_purchase_products_to_purchase(cart, purchase)
-    purchase.save
     cart.cart_packs.each do |cart_pack|
       purchase.purchase_packs << PurchasePack.create(
         pack_id: cart_pack.pack_id,

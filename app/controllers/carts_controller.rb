@@ -33,16 +33,17 @@ class CartsController < ApplicationController
 
     user_cart
 
-    if @cart.pack?(pack)
-      add_units_to_pack(pack, quantity)
-    else
-      add_new_pack(pack, quantity)
+    if @cart.restaurant_id != restaurant_id.to_i
+      @cart.clean_cart_packs
+      @cart.update_column(:restaurant_id, params[:restaurant_id])
     end
+
+    add_units_to_pack(pack, quantity)
 
     if @error.present?
       render json: { message: @error }, status: 422
     else
-      render json: { message: 'Pack agregado correctamente', cart: @cart }, status: 200
+      render json: { message: 'Pack agregado correctamente', cart: @cart.reload }, status: 200
     end
   end
 
@@ -73,20 +74,16 @@ class CartsController < ApplicationController
   end
 
   def add_units_to_pack(pack, quantity)
-    cart_pack = @cart.cart_packs.where(pack_id: pack.id).first
-    new_quantity = cart_pack.quantity + quantity.to_i
-
-    if new_quantity.to_i > cart_pack.stock
-      @error = 'No hay stock'
-    else
-      cart_pack.quantity = new_quantity
-      cart_pack.save!
+    if @cart.pack?(pack)
+      cart_pack = @cart.cart_packs.where(pack_id: pack.id).first
+      quantity = cart_pack.quantity + quantity.to_i
     end
-  end
 
-  def add_new_pack(pack, quantity)
     if quantity.to_i > pack.stock
       @error = 'No hay stock'
+    elsif @cart.pack?(pack)
+      cart_pack.quantity = quantity
+      cart_pack.save!
     else
       cart_pack = CartPack.create(pack_id: pack.id, quantity: quantity, cart_id: @cart.id)
       @cart.cart_packs << cart_pack

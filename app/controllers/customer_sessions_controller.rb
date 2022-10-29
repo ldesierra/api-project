@@ -7,6 +7,19 @@ class CustomerSessionsController < Devise::SessionsController
   skip_before_action :verify_authenticity_token
   after_action :skip_session
 
+  def create
+    super
+
+    cart_id = session[:cart_id]
+    return unless cart_id.present?
+
+    current_customer_id = current_customer.id
+
+    Cart.find_by(customer_id: current_customer_id).destroy!
+
+    Cart.find(cart_id).update_column(:customer_id, current_customer_id)
+  end
+
   def skip_session
     request.session_options[:skip] = true
   end

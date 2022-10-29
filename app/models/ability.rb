@@ -19,14 +19,12 @@ class Ability
     end
   end
 
-  def non_logged_user_abilities(user)
+  def non_logged_user_abilities(_user)
     can :read, Category
     can :create, Restaurant
     can :read, Pack
     can :read, Restaurant, status: :active
-    can :manage, Cart do |cart|
-      session[:cart_id] == cart.id || (user.present? && cart.customer_id = user.id)
-    end
+    can :manage, Cart
   end
 
   def manager_abilities(user)

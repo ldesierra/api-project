@@ -40,6 +40,13 @@ module Restaurants
     end
 
     def delivered
+      restaurant = Restaurant.find(params[:restaurant_id])
+      code = params[:code]
+
+      unless restaurant.purchases.where(status: :completed).map(&:code).include?(code)
+        return render json: { message: 'Pedido no encontrado' }, status: 404
+      end
+
       unless params[:code] == @purchase.code
         return render json: { message: 'Debe tener el codigo para marcar entregado' }, status: 401
       end
