@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
     resources :purchases, only: [:index, :show], module: 'restaurants' do
       put :delivered, on: :member
+      get :by_code, on: :collection
     end
     resources :restaurant_users, only: [:index], module: 'restaurants'
   end

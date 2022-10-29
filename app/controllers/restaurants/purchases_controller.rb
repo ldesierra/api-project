@@ -40,7 +40,6 @@ module Restaurants
     end
 
     def delivered
-      @purchase = Purchase.find_by(code: params[:code])
       @purchase.status = 'delivered'
 
       if @purchase.save
@@ -48,6 +47,16 @@ module Restaurants
       else
         render json: { message: 'Error al marcar pedido como entregado' }, status: 422
       end
+    end
+
+    def by_code
+      restaurant_id = params[:restaurant_id]
+
+      if current_restaurant_user.restaurant_id != restaurant_id.to_i
+        render json: { message: 'No tiene acceso a este restaurante' }, status: 401
+      end
+
+      @purchase = Purchase.find_by(code: params[:code])
     end
 
     private

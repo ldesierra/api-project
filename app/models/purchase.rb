@@ -31,8 +31,8 @@ class Purchase < ApplicationRecord
   end
 
   def packs_uniqueness
-    purchs = purchase_packs.map(&:pack)
-    return true unless purchs.detect { |purch| purchs.count(purch) > 1 }
+    packs = purchase_packs.map(&:pack)
+    return true unless packs.detect { |pack| packs.count(pack) > 1 }
 
     errors.add(:purchase, 'Los packs añadidos no deben repetirse')
   end
