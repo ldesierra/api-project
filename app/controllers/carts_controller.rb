@@ -90,15 +90,14 @@ class CartsController < ApplicationController
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
-
   def user_cart
     session_cart_id = session[:cart_id]
+    cart = Cart.find_by(id: session_cart_id)
 
     @cart = if current_customer.present? && current_customer.cart.present?
               current_customer.cart
-            elsif session_cart_id.present? && Cart.find(session_cart_id).present?
-              Cart.find(session_cart_id)
+            elsif session_cart_id.present? && non_logged_cart(cart)
+              cart
             else
               cart = Cart.create
 
@@ -112,5 +111,7 @@ class CartsController < ApplicationController
             end
   end
 
-  # rubocop:enable Metrics/AbcSize
+  def non_logged_cart(cart)
+    cart.present? && cart.customer_id.blank?
+  end
 end
