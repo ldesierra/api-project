@@ -102,7 +102,7 @@ class CartsController < ApplicationController
               cart = Cart.create
 
               if current_customer.present?
-                cart.customer_id = current_customer.id
+                cart.update_column(:customer_id, current_customer.id)
               else
                 session[:cart_id] = cart.id
               end
