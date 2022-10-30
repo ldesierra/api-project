@@ -25,7 +25,6 @@ module NoLoTiresBack
       config.session_store :cookie_store, key: '_interslice_session'
     end
 
-    config.action_dispatch.cookies_same_site_protection = :none
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
   end
