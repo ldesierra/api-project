@@ -15,7 +15,9 @@ class CustomerSessionsController < Devise::SessionsController
 
     current_customer_id = current_customer.id
 
-    Cart.find_by(customer_id: current_customer_id).destroy!
+    cart = Cart.find_by(customer_id: current_customer_id)
+    cart.cart_packs.each(&:destroy)
+    cart.destroy!
 
     Cart.find(cart_id).update_column(:customer_id, current_customer_id)
   end
