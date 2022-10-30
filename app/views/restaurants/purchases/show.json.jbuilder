@@ -1,8 +1,11 @@
 json.purchase do
   json.id @purchase.id
+  json.created_at @purchase.created_at
   json.total @purchase.total
   json.customer_id @purchase.customer_id
   json.restaurant_id @purchase.restaurant_id
+  json.restaurant_name @purchase.restaurant.name
+  json.restaurant_logo @purchase.restaurant.logo.medium.url
   json.customer_first_name @purchase.customer.first_name
   json.customer_last_name @purchase.customer.last_name
   json.status @purchase.status
