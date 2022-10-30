@@ -11,11 +11,15 @@ class CustomerSessionsController < Devise::SessionsController
     super
 
     cart_id = session[:cart_id]
+
     return unless cart_id.present?
 
     current_customer_id = current_customer.id
 
     cart = Cart.find_by(customer_id: current_customer_id)
+
+    return if cart.blank?
+
     cart.cart_packs.each(&:destroy)
     cart.destroy!
 
