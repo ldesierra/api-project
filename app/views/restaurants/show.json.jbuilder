@@ -14,7 +14,7 @@ json.restaurant do
     json.id category.id
   end
 
-  json.packs @restaurant.packs do |pack|
+  json.packs @restaurant.packs.where.not(stock: 0) do |pack|
     json.id pack.id
     json.name pack.name
     json.stock pack.stock
