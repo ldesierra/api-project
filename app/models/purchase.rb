@@ -75,6 +75,6 @@ class Purchase < ApplicationRecord
 
     code = Random.hex.first(6) while Purchase.find_by(code: code).present?
 
-    self.code = code
+    self.code = code.upcase
   end
 end
