@@ -32,7 +32,7 @@ class PurchasesController < ApplicationController
   def create
     cart = Cart.find(cart_params[:cart_id])
 
-    render json: { message: 'Necesita loguearse' }, status: 401 unless cart.customer.present?
+    return render json: { message: 'Necesita usuario' }, status: 401 unless cart.customer.present?
 
     if not_enough_stock_for_purchase(cart)
       return render json: { message: 'No hay suficiente stock' }, status: 422
