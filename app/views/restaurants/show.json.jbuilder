@@ -7,6 +7,7 @@ json.restaurant do
   json.latitude @restaurant.latitude
   json.longitude @restaurant.longitude
   json.status @restaurant.status
+  json.qualification @restaurant.qualification
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
   json.categories @restaurant.main_categories do |category|

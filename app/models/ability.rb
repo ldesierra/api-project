@@ -49,7 +49,7 @@ class Ability
   end
 
   def customer_abilities(user)
-    can [:read, :create, :success, :payment_link], Purchase, customer_id: user.id
+    can [:read, :create, :success, :payment_link, :qualify], Purchase, customer_id: user.id
   end
 
   def admin_abilities

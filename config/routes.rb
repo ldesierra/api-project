@@ -24,10 +24,6 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
-  resources :customer do
-    resources :purchases, only: [:show], module: 'customers'
-  end
-
   resources :restaurants, only: [:new, :create, :index, :show, :update] do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
     resources :purchases, only: [:index, :show], module: 'restaurants' do
@@ -49,6 +45,7 @@ Rails.application.routes.draw do
 
   resources :purchases, only: [:create, :index, :show] do
     get :payment_link, on: :collection
+    put :qualify, on: :member
   end
 
   get 'payments/success', to: 'payments#success'
