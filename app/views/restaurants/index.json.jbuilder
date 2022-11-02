@@ -9,6 +9,7 @@ json.restaurants @restaurants do |restaurant|
   json.status restaurant.status
   json.logo restaurant.logo
   json.qualification restaurant.qualification
+  json.amount_of_qualifications restaurant.amount_of_qualifications
   json.open_hours restaurant.open_hours
   json.categories restaurant.main_categories do |category|
     json.name category.name

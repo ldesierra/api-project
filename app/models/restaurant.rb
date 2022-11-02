@@ -47,6 +47,12 @@ class Restaurant < ApplicationRecord
     Category.where(id: most_common_categories)
   end
 
+  def amount_of_qualifications
+    qualified_purchases = purchases.map(&:qualification).filter { |value| !value.zero? }
+
+    qualified_purchases.size
+  end
+
   def qualification
     qualified_purchases = purchases.map(&:qualification).filter { |value| !value.zero? }
 
