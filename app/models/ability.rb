@@ -28,6 +28,7 @@ class Ability
   end
 
   def manager_abilities(user)
+    can :view, :statistics
     can :create, Pack
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id
     can [:read], RestaurantUser, restaurant_id: user.restaurant_id

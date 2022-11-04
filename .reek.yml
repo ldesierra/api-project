@@ -1,4 +1,6 @@
 detectors:
+  LongParameterList:
+    max_params: 6
   UnusedParameters:
     exclude:
       - "FakeTwilio#create"
@@ -19,8 +21,10 @@ detectors:
   ControlParameter:
     exclude:
     - "Purchase#purchase_pack_quantity_changed"
+    - "StatisticsController#separate_by_step"
+    - "Restaurants::StatisticsController#separate_by_days"
   TooManyStatements:
-    max_statements: 10
+    max_statements: 12
     exclude:
       - "RestaurantInvitationsController#update"
   UtilityFunction:

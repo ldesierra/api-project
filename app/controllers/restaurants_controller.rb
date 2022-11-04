@@ -58,7 +58,7 @@ class RestaurantsController < ApplicationController
     return restaurants unless params[:category].present?
 
     restaurant_ids = restaurants.filter do |restaurant|
-      restaurant.main_categories.pluck(:name).include?(params[:category])
+      restaurant.main_categories.pluck(:name) & JSON[params[:category]]
     end
 
     Restaurant.where(id: restaurant_ids)
