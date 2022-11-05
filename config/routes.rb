@@ -31,8 +31,7 @@ Rails.application.routes.draw do
       put :delivered, on: :member
       get :by_code, on: :collection
     end
-
-    resources :restaurant_users, only: [:index], module: 'restaurants'
+    resources :restaurant_users, only: [:index, :destroy], module: 'restaurants'
   end
 
   resources :jwt do

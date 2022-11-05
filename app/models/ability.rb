@@ -31,7 +31,7 @@ class Ability
     can :view, :statistics
     can :create, Pack
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id
-    can [:read], RestaurantUser, restaurant_id: user.restaurant_id
+    can [:read, :destroy], RestaurantUser, restaurant_id: user.restaurant_id
     can [:destroy, :update], Pack do |pack|
       pack.restaurant.restaurant_users.include?(user)
     end
