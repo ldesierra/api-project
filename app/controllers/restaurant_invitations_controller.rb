@@ -6,6 +6,24 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   prepend_before_action :require_no_authentication, only: [:edit, :update, :destroy]
 
+  # POST /resource/invitation
+  def create
+    if cannot? :create, RestaurantUser
+      return render json: { message: 'No estas autorizado para realizar la accion' }, status: 401
+    end
+
+    return respond_with_errors(resource) if restaurant_user_invalid?
+
+    resource.save
+    resource.invite!
+
+    if resource.errors.empty?
+      render json: { message: 'Invitation enviada!' }, status: 200
+    else
+      respond_with_errors(resource)
+    end
+  end
+
   # PUT /resource/invitation
   def update
     load_restaurant_user
@@ -30,6 +48,11 @@ class RestaurantInvitationsController < Devise::InvitationsController
   end
 
   private
+
+  def restaurant_user_invalid?
+    self.resource = RestaurantUser.new(create_params)
+    resource.invalid?
+  end
 
   def respond_with_errors(_resource)
     render json: { message: resource.full_messages_for_errors }, status: 422
@@ -68,6 +91,10 @@ class RestaurantInvitationsController < Devise::InvitationsController
 
   def invitation_token
     params.require(:restaurant_user)[:invitation_token]
+  end
+
+  def create_params
+    params.require(:restaurant_user).permit(:email, :phone_number, :restaurant_id, :role, :name)
   end
 
   def restaurant_params

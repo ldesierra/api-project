@@ -13,7 +13,7 @@ class Ability
     elsif user.is_a?(Customer)
       customer_abilities(user)
     elsif user.employee?
-      employee_abilities
+      employee_abilities(user)
     else
       manager_abilities(user)
     end
@@ -31,7 +31,7 @@ class Ability
     can :view, :statistics
     can :create, Pack
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id
-    can [:read, :destroy], RestaurantUser, restaurant_id: user.restaurant_id
+    can [:read, :create, :destroy], RestaurantUser, restaurant_id: user.restaurant_id
     can [:destroy, :update], Pack do |pack|
       pack.restaurant.restaurant_users.include?(user)
     end
@@ -40,7 +40,7 @@ class Ability
     end
   end
 
-  def employee_abilities
+  def employee_abilities(user)
     can :create, Pack
     can [:read], RestaurantUser, restaurant_id: user.restaurant_id
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id

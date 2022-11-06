@@ -20,7 +20,7 @@ class DeviseMailer < Devise::Mailer
   end
 
   def restaurant_attributes(record)
-    return unless record.restaurant.incomplete?
+    return '' unless record.restaurant.incomplete?
 
     restaurant_attributes = record.restaurant
                                   .attributes

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post '/restaurant_users/password', to: 'restaurant_passwords#create'
     put '/restaurant_users/password', to: 'restaurant_passwords#update'
     get '/restaurant_users/accept_invite', to: 'restaurant_invitations#edit'
+    post '/restaurant_users/invite', to: 'restaurant_invitations#create'
     put '/restaurant_users/confirm_invite', to: 'restaurant_invitations#update'
   end
 
