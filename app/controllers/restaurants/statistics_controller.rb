@@ -69,7 +69,11 @@ module Restaurants
       return if Restaurant.find(restaurant_id).blank?
 
       purchases = Purchase.where(restaurant_id: restaurant_id, status: [1, 2])
-                          .where('purchases.created_at BETWEEN ? AND ?', start_date, end_date)
+                          .where(
+                            'purchases.created_at BETWEEN ? AND ?',
+                            start_date.beginning_of_day,
+                            end_date.end_of_day
+                          )
 
       separate_by_days(kind, purchases, start_date, end_date)
     end
