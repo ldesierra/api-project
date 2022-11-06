@@ -9,11 +9,11 @@ json.restaurants @restaurants do |restaurant|
   json.status restaurant.status
   json.logo restaurant.logo
   json.open_hours restaurant.open_hours
-  json.categories restaurant.categories.uniq do |category|
+  json.categories restaurant.main_categories do |category|
     json.name category.name
     json.id category.id
   end
 end
 
-json.page @pagy.page
-json.total_pages @pagy.pages
+json.page @pagy&.page
+json.total_pages @pagy&.pages

@@ -16,8 +16,8 @@ module Restaurants
         user_belongs_to_restaurant(restaurant_id)
 
       @packs = Restaurant.find(restaurant_id).packs
-      page = params[:page].presence
-      items = params[:items].presence
+      page = params[:page].presence || Pagy::DEFAULT[:page]
+      items = params[:items].presence || Pagy::DEFAULT[:items]
 
       begin
         @pagy, @packs = pagy(@packs, page: page, items: items)

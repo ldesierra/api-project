@@ -10,4 +10,8 @@ class Pack < ApplicationRecord
 
   validates_presence_of :name, :stock, :price, :full_description, :short_description
   accepts_nested_attributes_for :categories, :pictures, allow_destroy: true
+
+  def select_string_for_purchase
+    "Pack ( Name: #{name}, Stock: #{stock} ) | Restaurant ( Name: #{restaurant.name} )"
+  end
 end

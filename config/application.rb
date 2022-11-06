@@ -17,7 +17,14 @@ module NoLoTiresBack
     end
 
     config.middleware.use ActionDispatch::Flash
-    config.session_store :cookie_store, key: '_interslice_session'
+
+    if ENV['PRODUCTION']
+      config.session_store :cookie_store, key: 'nolotiresSession', httponly: false,
+                                          same_site: :none, secure: true
+    else
+      config.session_store :cookie_store, key: '_interslice_session'
+    end
+
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
   end

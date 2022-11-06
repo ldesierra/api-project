@@ -106,7 +106,7 @@ ActiveAdmin.register Restaurant do
           column :full_description
           column :short_description
           column :price
-          column :category_ids
+          column :categories
         end
       end
     end

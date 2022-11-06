@@ -1,6 +1,9 @@
 class Customer < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
+  has_many :purchases
+  has_one :cart
+
   devise :database_authenticatable, :registerable, :recoverable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 

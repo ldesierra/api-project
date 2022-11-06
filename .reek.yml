@@ -16,6 +16,9 @@ detectors:
     max_allowed_nesting: 2
   RepeatedConditional:
     max_ifs: 3
+  ControlParameter:
+    exclude:
+    - "Purchase#purchase_pack_quantity_changed"
   TooManyStatements:
     max_statements: 10
     exclude:

@@ -24,13 +24,35 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
+  resources :customer do
+    resources :purchases, only: [:show], module: 'customers'
+  end
+
   resources :restaurants, only: [:new, :create, :index, :show, :update] do
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
+    resources :purchases, only: [:index, :show], module: 'restaurants' do
+      put :delivered, on: :member
+      get :by_code, on: :collection
+    end
+    resources :restaurant_users, only: [:index], module: 'restaurants'
   end
 
   resources :jwt do
     post :check_token, on: :collection
   end
+
+  resources :carts, only: [:show] do
+    put :add, on: :collection
+    put :remove, on: :collection
+    get :show, on: :collection
+  end
+
+  resources :purchases, only: [:create, :index, :show] do
+    get :payment_link, on: :collection
+  end
+
+  get 'payments/success', to: 'payments#success'
+  get 'payments/failure', to: 'payments#failure'
 
   resources :packs, only: [:show, :destroy]
 
