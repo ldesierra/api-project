@@ -32,8 +32,9 @@ SimplifyRenderInViewsCheck: {}
 UseModelAssociationCheck: {}
 UseMultipartAlternativeAsContentTypeOfEmailCheck:
   ignored_files:
-    - 'app/mailers/restaurant_mailer.rb'
     - 'app/mailers/devise_mailer.rb'
+    - 'app/mailers/payment_mailer.rb'
+    - 'app/mailers/restaurant_mailer.rb'
 
 #UseParenthesesInMethodDefCheck: { }
 UseObserverCheck: {}
