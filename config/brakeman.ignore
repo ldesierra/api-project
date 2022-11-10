@@ -3,6 +3,29 @@
     {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
+      "fingerprint": "3a48bdc57d8bae289d6157dda9dfdaa625157860123c3cb2c7077e3208dc51c1",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/restaurant_invitations_controller.rb",
+      "line": 97,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:restaurant_user).permit(:email, :restaurant_id, :role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "RestaurantInvitationsController",
+        "method": "create_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
       "fingerprint": "50c5dd8619da59231f17e8ef16328d0b211d9325a007212b5afa5f718b831aed",
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
@@ -24,6 +47,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-11-04 22:38:52 -0300",
+  "updated": "2022-11-10 12:44:32 -0300",
   "brakeman_version": "5.3.1"
 }

@@ -94,7 +94,7 @@ class RestaurantInvitationsController < Devise::InvitationsController
   end
 
   def create_params
-    params.require(:restaurant_user).permit(:email, :phone_number, :restaurant_id, :role, :name)
+    params.require(:restaurant_user).permit(:email, :restaurant_id, :role)
   end
 
   def restaurant_params
