@@ -24,6 +24,10 @@ class Customer < ApplicationRecord
     super.merge(user_kind: 'customer', id: id, username: username)
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
 
   def restore_if_unique_email
