@@ -4,7 +4,9 @@ class PacksController < ApplicationController
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token
 
-  def show; end
+  def show
+    return render json: { message: 'Pack no encontrado' }, status: 404 if @pack.blank?
+  end
 
   def destroy
     return render json: { message: 'Pack no encontrado' }, status: 404 if @pack.blank?
