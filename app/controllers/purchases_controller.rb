@@ -109,7 +109,7 @@ class PurchasesController < ApplicationController
 
     purchases = purchases.where(status: params[:status]) if params[:status].present?
 
-    purchases.order(:created_at)
+    purchases.order(created_at: :desc)
   end
 
   def load_purchase_products_to_purchase(cart, purchase)
