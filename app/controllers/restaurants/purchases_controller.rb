@@ -65,7 +65,7 @@ module Restaurants
     def by_code
       restaurant_id = params[:restaurant_id]
 
-      if current_restaurant_user.restaurant_id == restaurant_id.to_i
+      if current_restaurant_user.restaurant_id != restaurant_id.to_i
         render json: { message: 'No tiene acceso a este restaurante' }, status: 401
       end
 
