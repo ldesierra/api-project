@@ -43,12 +43,14 @@ module Restaurants
       restaurant = Restaurant.find(params[:restaurant_id])
       code = params[:code]
 
-      unless restaurant.purchases.where(status: :completed).map(&:code).include?(code)
-        return render json: { message: 'Pedido no encontrado' }, status: 404
+      if current_restaurant_user.restaurant_id != restaurant.id
+        render json: { message: 'No tiene acceso a este restaurante' }, status: 401
       end
 
-      unless params[:code] == @purchase.code
-        return render json: { message: 'Debe tener el codigo para marcar entregado' }, status: 401
+      unless restaurant.purchases.where(status: :completed).map(&:code).include?(code) &&
+             params[:code] == @purchase.code
+
+        return render json: { message: 'Codigo incorrecto' }, status: 404
       end
 
       @purchase.status = 'delivered'

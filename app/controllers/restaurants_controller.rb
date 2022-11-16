@@ -9,9 +9,10 @@ class RestaurantsController < ApplicationController
 
   load_and_authorize_resource
 
-  def new; end
-
-  def show; end
+  def show
+    return render json: { message: 'Restaurante no encontrado' }, status: 404 if
+      @restaurant.blank?
+  end
 
   def index
     page, items, clients_latitude, clients_longitude = params_for_index_action
@@ -58,7 +59,7 @@ class RestaurantsController < ApplicationController
     return restaurants unless params[:category].present?
 
     restaurant_ids = restaurants.filter do |restaurant|
-      restaurant.main_categories.pluck(:name).include?(params[:category])
+      (restaurant.main_categories.pluck(:name) & JSON[params[:category]]).present?
     end
 
     Restaurant.where(id: restaurant_ids)

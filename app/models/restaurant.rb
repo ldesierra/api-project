@@ -47,6 +47,20 @@ class Restaurant < ApplicationRecord
     Category.where(id: most_common_categories)
   end
 
+  def amount_of_qualifications
+    qualified_purchases = purchases.map(&:qualification).filter { |value| !value.zero? }
+
+    qualified_purchases.size
+  end
+
+  def qualification
+    qualified_purchases = purchases.map(&:qualification).filter { |value| !value.zero? }
+
+    return 0 if qualified_purchases.size.zero?
+
+    qualified_purchases.sum / qualified_purchases.size
+  end
+
   private
 
   def geocode_coordinates

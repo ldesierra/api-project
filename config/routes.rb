@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     post '/restaurant_users/password', to: 'restaurant_passwords#create'
     put '/restaurant_users/password', to: 'restaurant_passwords#update'
     get '/restaurant_users/accept_invite', to: 'restaurant_invitations#edit'
+    post '/restaurant_users/invite', to: 'restaurant_invitations#create'
     put '/restaurant_users/confirm_invite', to: 'restaurant_invitations#update'
   end
 
@@ -24,17 +25,14 @@ Rails.application.routes.draw do
     put '/customers/password', to: 'customer_passwords#update'
   end
 
-  resources :customer do
-    resources :purchases, only: [:show], module: 'customers'
-  end
-
-  resources :restaurants, only: [:new, :create, :index, :show, :update] do
+  resources :restaurants, only: [:create, :index, :show, :update] do
+    resource :statistics, only: [:show], module: 'restaurants'
     resources :packs, only: [:index, :update, :create], module: 'restaurants'
     resources :purchases, only: [:index, :show], module: 'restaurants' do
       put :delivered, on: :member
       get :by_code, on: :collection
     end
-    resources :restaurant_users, only: [:index], module: 'restaurants'
+    resources :restaurant_users, only: [:index, :destroy], module: 'restaurants'
   end
 
   resources :jwt do
@@ -49,6 +47,7 @@ Rails.application.routes.draw do
 
   resources :purchases, only: [:create, :index, :show] do
     get :payment_link, on: :collection
+    put :qualify, on: :member
   end
 
   get 'payments/success', to: 'payments#success'

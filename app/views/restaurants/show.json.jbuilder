@@ -7,6 +7,8 @@ json.restaurant do
   json.latitude @restaurant.latitude
   json.longitude @restaurant.longitude
   json.status @restaurant.status
+  json.amount_of_qualifications @restaurant.amount_of_qualifications
+  json.qualification @restaurant.qualification
   json.logo @restaurant.logo
   json.open_hours @restaurant.open_hours
   json.categories @restaurant.main_categories do |category|
@@ -14,7 +16,7 @@ json.restaurant do
     json.id category.id
   end
 
-  json.packs @restaurant.packs do |pack|
+  json.packs @restaurant.packs.where.not(stock: 0) do |pack|
     json.id pack.id
     json.name pack.name
     json.stock pack.stock

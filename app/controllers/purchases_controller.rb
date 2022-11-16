@@ -29,6 +29,24 @@ class PurchasesController < ApplicationController
     return render json: { message: 'No autorizado' }, status: 401 unless current_customer.present?
   end
 
+  def qualify
+    unless @purchase.delivered?
+      return render json: { message: 'Debe estar entregado para calificarse' }, status: 422
+    end
+
+    unless (1..5).include? params[:qualification].to_i
+      return render json: { message: 'Debe estar entre 1 y 5' }, status: 422
+    end
+
+    @purchase.qualification = params[:qualification].to_i
+
+    if @purchase.save
+      render json: { message: 'Pedido calificado correctamente' }, status: 200
+    else
+      render json: { message: 'Error al calificar pedido' }, status: 422
+    end
+  end
+
   def create
     cart = Cart.find(cart_params[:cart_id])
 
@@ -91,7 +109,7 @@ class PurchasesController < ApplicationController
 
     purchases = purchases.where(status: params[:status]) if params[:status].present?
 
-    purchases
+    purchases.order(created_at: :desc)
   end
 
   def load_purchase_products_to_purchase(cart, purchase)
