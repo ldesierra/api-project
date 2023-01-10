@@ -28,25 +28,11 @@ class Ability
   end
 
   def manager_abilities(user)
-    can :view, :statistics
-    can :create, Pack
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id
-    can [:read, :create, :destroy], RestaurantUser, restaurant_id: user.restaurant_id
-    can [:destroy, :update], Pack do |pack|
-      pack.restaurant.restaurant_users.include?(user)
-    end
-    can :update, Restaurant do |restaurant|
-      restaurant.restaurant_users.include?(user)
-    end
   end
 
   def employee_abilities(user)
-    can :create, Pack
-    can [:read], RestaurantUser, restaurant_id: user.restaurant_id
     can [:read, :delivered, :by_code], Purchase, restaurant_id: user.restaurant_id
-    can [:destroy, :update], Pack do |pack|
-      pack.restaurant.restaurant_users.include?(user)
-    end
   end
 
   def customer_abilities(user)

@@ -26,36 +26,11 @@ Rails.application.routes.draw do
   end
 
   resources :restaurants, only: [:create, :index, :show, :update] do
-    resource :statistics, only: [:show], module: 'restaurants'
-    resources :packs, only: [:index, :update, :create], module: 'restaurants'
     resources :purchases, only: [:index, :show], module: 'restaurants' do
       put :delivered, on: :member
       get :by_code, on: :collection
     end
-    resources :restaurant_users, only: [:index, :destroy], module: 'restaurants'
   end
-
-  resources :jwt do
-    post :check_token, on: :collection
-  end
-
-  resources :carts, only: [:show] do
-    put :add, on: :collection
-    put :remove, on: :collection
-    get :show, on: :collection
-  end
-
-  resources :purchases, only: [:create, :index, :show] do
-    get :payment_link, on: :collection
-    put :qualify, on: :member
-  end
-
-  get 'payments/success', to: 'payments#success'
-  get 'payments/failure', to: 'payments#failure'
-
-  resources :packs, only: [:show, :destroy]
-
-  resources :categories, only: [:index]
 
   root to: 'home#index'
 end
